@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Magic AI · תוכנית שותפים לאדריכלים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  Option C · "Materials & craft"
+  Copy: BRIEF.md (verbatim or shortened, no added claims).
+  ⚠️ Exclusive collections: NEGOTIATIONS only, no brand names, until the client confirms.
+  ⚠️ The spec card numbers are the platform's own TEST data, taken from the real screen s3
+     (porcelain tile 60×60, Factory A). "Full cost to Ashdod" = factory price + freight and
+     insurance + duty, fees and port, as itemised on that screen. Marked as an example on the page.
+  ⚠️ "לא במחירי אולם תצוגה" is the client's own line from commagic.ai (EN solutions page).
+  No video: the demo voiceover is Russian. The real platform screen stands in for it.
+-->
+<style>
+:root{
+  --ink:#0e1424;--ink2:#3a4256;--mute:#6b7385;--line:#e4e7ee;--bg:#f7f8fa;--card:#fff;
+  --accent:#3355d6;--accent-soft:#eef2ff;--ok:#16a34a;
+  --deep:#1f2a44;--deep2:#26304a;--peri:#8fa6ff;--peri2:#c7d0f5;
+  --stone:#ecebe7;            /* the light "sample room" tone, cool, not cream */
+  --r:16px;
+  --shadow:0 1px 2px rgba(14,20,36,.04),0 8px 24px rgba(14,20,36,.06);
+  --he:'Heebo',system-ui,sans-serif;
+  --num:'Manrope','Heebo',system-ui,sans-serif;
+  --g:20px;
+  /* material textures, all CSS / inline SVG */
+  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .28 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  --bands:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' preserveAspectRatio='none'><filter id='b'><feTurbulence type='fractalNoise' baseFrequency='.003 .05' numOctaves='3' seed='4'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .36  0 0 0 0 .25  0 0 0 -1.4 1.05'/></filter><rect width='100%25' height='100%25' filter='url(%23b)'/></svg>");
+  --veins:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='v' x='0' y='0' width='100%25' height='100%25'><feTurbulence type='turbulence' baseFrequency='.006 .011' numOctaves='4' seed='11'/><feColorMatrix type='luminanceToAlpha'/><feComponentTransfer><feFuncA type='table' tableValues='0 0 0 .26 .05 0 0 0 0 0 0 0 0 0 0 0'/></feComponentTransfer></filter><rect width='100%25' height='100%25' filter='url(%23v)'/></svg>");
+  --wood:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' preserveAspectRatio='none'><filter id='w'><feTurbulence type='fractalNoise' baseFrequency='.002 .14' numOctaves='3' seed='9'/><feColorMatrix values='0 0 0 0 .28  0 0 0 0 .17  0 0 0 0 .08  0 0 0 -1.6 1.1'/></filter><rect width='100%25' height='100%25' filter='url(%23w)'/></svg>");
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;font-family:var(--he);color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px;overflow-x:hidden}
+img{max-width:100%;display:block}
+.n{font-family:var(--num);font-feature-settings:"tnum" 1;direction:ltr;unicode-bidi:isolate}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--g)}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.01em;line-height:1.12}
+p{margin:0}
+:focus-visible{outline:3px solid var(--peri);outline-offset:3px;border-radius:6px}
+
+/* ---------- buttons, logo ---------- */
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:18px;color:#fff;font-family:var(--num);direction:ltr}
+.logo b{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:#fff;color:var(--ink);font-size:15px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:14px 26px;border-radius:12px;font:700 17px/1.2 var(--he);text-decoration:none;cursor:pointer;border:0;transition:background .2s,transform .2s}
+.btn-acc{background:var(--accent);color:#fff}
+.btn-acc:hover{background:#2846bd}
+.btn-white{background:#fff;color:var(--ink)}
+.btn-white:hover{background:var(--accent-soft)}
+.btn-sm{min-height:42px;padding:9px 16px;font-size:15px;border-radius:10px}
+
+/* ---------- hero (ink) ---------- */
+.hero{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:var(--grain);opacity:.5;mix-blend-mode:soft-light;pointer-events:none}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;position:relative;z-index:2}
+.hero-in{position:relative;z-index:1;padding:34px 0 48px}
+.eyebrow{font-size:15px;color:var(--peri2);font-weight:500;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--peri);flex:none}
+.hero h1{font-size:clamp(31px,8.4vw,74px);line-height:1.08;letter-spacing:-.02em}
+.hero h1 .pk{display:block;color:var(--peri)}
+.hero-row{display:grid;gap:32px;margin-top:26px}
+.hero .sub{font-size:17.5px;color:#cfd5e4;max-width:34em;line-height:1.7}
+.cta-block{margin-top:26px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.due{font-size:14.5px;color:#aab3c8;display:flex;align-items:center;gap:8px}
+.due::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--peri)}
+
+/* the sample board */
+.board{position:relative}
+.board-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:auto auto;gap:8px}
+.sw{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:1/1;box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 10px 28px rgba(0,0,0,.35)}
+.sw::after{content:"";position:absolute;inset:0;background:var(--grain);mix-blend-mode:multiply;opacity:.55}
+.sw span{position:absolute;bottom:8px;inset-inline-start:9px;z-index:2;font-size:12.5px;font-weight:500;color:rgba(14,20,36,.78);background:rgba(255,255,255,.62);padding:1px 8px;border-radius:20px;backdrop-filter:blur(4px)}
+.sw.dark span{color:#fff;background:rgba(14,20,36,.45)}
+.sw-big{grid-row:span 2;aspect-ratio:auto}
+.m-trav{background:var(--bands),linear-gradient(170deg,#e4dccd,#d3c6b0 60%,#cbbca3);background-size:cover}
+.m-oak{background:var(--wood),linear-gradient(90deg,#b7894f,#a7773f 50%,#b98d55);background-size:cover}
+.m-brass{background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,rgba(0,0,0,.05) 1px 3px),linear-gradient(120deg,#8d6f3c,#d8bd7d 38%,#a8874c 58%,#e3cc95 78%,#957643)}
+.m-terr{background:
+  radial-gradient(circle at 18% 30%,#a9442f 0 4px,transparent 5px),radial-gradient(circle at 62% 18%,#2f3e5e 0 3px,transparent 4px),
+  radial-gradient(circle at 78% 62%,#c9a46a 0 5px,transparent 6px),radial-gradient(circle at 35% 75%,#5c6675 0 3px,transparent 4px),
+  radial-gradient(circle at 48% 44%,#d9d3c8 0 6px,transparent 7px),radial-gradient(circle at 85% 88%,#a9442f 0 3px,transparent 4px),
+  radial-gradient(circle at 12% 85%,#c9a46a 0 3px,transparent 4px),radial-gradient(circle at 70% 35%,#7d8696 0 2px,transparent 3px);
+  background-color:#efede8;background-size:64px 64px}
+.m-tile{background:
+  var(--veins) 0 0/260% auto,
+  linear-gradient(90deg,transparent calc(50% - 1px),#b9bcc2 calc(50% - 1px) calc(50% + 1px),transparent calc(50% + 1px)),
+  linear-gradient(0deg,transparent calc(50% - 1px),#b9bcc2 calc(50% - 1px) calc(50% + 1px),transparent calc(50% + 1px)),
+  linear-gradient(135deg,#e9eaec,#d6d8dc 55%,#e1e2e5)}
+.m-basalt{background:var(--veins) 30% 40%/300% auto,radial-gradient(circle at 30% 20%,rgba(255,255,255,.05) 0 1px,transparent 2px) 0 0/7px 7px,radial-gradient(120% 90% at 20% 10%,#4f586d,#2a3040 60%,#1c2130)}
+.board-cap{margin-top:16px;font-size:15px;color:#cfd5e4;line-height:1.65;padding-inline-start:14px;border-inline-start:2px solid var(--peri)}
+.board-cap b{color:#fff;font-weight:700}
+
+/* ---------- section scaffolding ---------- */
+.sec{padding:64px 0}
+.sec h2{font-size:clamp(28px,6.6vw,50px);letter-spacing:-.015em}
+.lead{color:var(--ink2);font-size:17.5px;margin-top:14px;max-width:36em}
+
+/* ---------- what partners get (light, editorial index) ---------- */
+.get{background:var(--bg)}
+.get-list{list-style:none;margin:34px 0 0;padding:0;border-top:1px solid #d5d9e2}
+.get-list li{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid #d5d9e2;align-items:start}
+.chip{width:44px;height:44px;border-radius:50%;position:relative;overflow:hidden;box-shadow:0 0 0 1px rgba(14,20,36,.08) inset}
+.chip::after{content:"";position:absolute;inset:0;background:var(--grain);mix-blend-mode:multiply;opacity:.5}
+.get-list h3{font-size:20px;line-height:1.3;margin-bottom:5px}
+.get-list p{color:var(--ink2);font-size:16.5px}
+.excl{margin-top:22px;background:var(--deep);color:#fff;border-radius:var(--r);padding:26px 22px;display:grid;gap:18px;position:relative;overflow:hidden}
+.excl .slab{height:84px;border-radius:8px;position:relative;overflow:hidden}
+.excl .slab::after{content:"";position:absolute;inset:0;background:var(--grain);mix-blend-mode:multiply;opacity:.5}
+.excl h3{font-size:24px}
+.excl p{color:#cfd5e4;margin-top:8px;font-size:16.5px}
+.tag{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;color:var(--peri2);border:1px solid rgba(143,166,255,.4);border-radius:30px;padding:4px 12px}
+.tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--peri)}
+.strip{margin-top:22px;font-size:18px;font-weight:700;line-height:1.5;padding:18px 0 0}
+.strip span{color:var(--accent)}
+
+/* ---------- how it works + signature card (stone) ---------- */
+.how{background:var(--stone);position:relative}
+.how::before{content:"";position:absolute;inset:0;background:var(--grain);opacity:.35;mix-blend-mode:multiply;pointer-events:none}
+.how .wrap{position:relative}
+.how-grid{display:grid;gap:38px;margin-top:34px}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:42px 1fr;gap:14px;padding:16px 0;border-top:1px solid rgba(14,20,36,.12);font-size:17px;color:var(--ink2)}
+.steps li:last-child{border-bottom:1px solid rgba(14,20,36,.12)}
+.steps li::before{content:counter(s);font:800 22px/1.3 var(--num);color:var(--accent)}
+.steps b{color:var(--ink)}
+.note{margin-top:18px;font-size:15.5px;color:var(--ink2);display:flex;gap:10px;align-items:center}
+.note::before{content:"";width:18px;height:18px;flex:none;border-radius:50%;background:var(--ok) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 12.5l4 4 8-9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/12px no-repeat}
+
+/* the flip card = the signature moment */
+.spec{perspective:1600px}
+.spec-kicker{font-size:clamp(22px,5.2vw,30px);font-weight:800;line-height:1.2;margin-bottom:16px}
+.spec-kicker span{color:var(--accent);display:block}
+.flip{display:grid;position:relative;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.2,.75,.2,1)}
+.flip.on{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;overflow:hidden;box-shadow:0 2px 4px rgba(14,20,36,.06),0 24px 48px rgba(14,20,36,.16)}
+.front{display:flex;flex-direction:column;background:#fff}
+.front .tilefield{flex:1;min-height:230px;position:relative;
+  background:
+   linear-gradient(90deg,transparent calc(50% - 1.5px),#b4b8bf calc(50% - 1.5px) calc(50% + 1.5px),transparent calc(50% + 1.5px)),
+   linear-gradient(0deg,transparent calc(50% - 1.5px),#b4b8bf calc(50% - 1.5px) calc(50% + 1.5px),transparent calc(50% + 1.5px)),
+   var(--veins),
+   radial-gradient(130% 100% at 80% 0%,#f3f2ef,#e2e0dc 60%,#d4d2cd);
+  background-size:50% 50%,50% 50%,cover,100% 100%}
+.front .tilefield::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.55),transparent 38%,transparent 62%,rgba(255,255,255,.25));z-index:1;pointer-events:none}
+.front .tilefield::after{content:"";position:absolute;inset:0;background:var(--grain);mix-blend-mode:multiply;opacity:.45}
+.front .lbl{position:absolute;top:14px;inset-inline-start:14px;z-index:2;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);border-radius:10px;padding:8px 12px;font-size:14px;line-height:1.45}
+.front .lbl b{display:block;font-size:16px}
+.front-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-top:1px solid var(--line)}
+.front-foot p{font-size:15px;color:var(--ink2);line-height:1.45}
+.flip-btn{flex:none}
+.back{transform:rotateY(180deg);background:var(--ink);color:#fff;padding:22px 20px 18px;display:flex;flex-direction:column}
+.back-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:14.5px;color:#aab3c8}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 14px}
+.vs div{border-radius:12px;padding:12px 14px}
+.vs .fac{background:var(--accent)}
+.vs .loc{background:rgba(255,255,255,.07);color:#cfd5e4}
+.vs small{display:block;font-size:13.5px;line-height:1.35;opacity:.9}
+.vs .n{display:block;font-size:clamp(26px,7vw,34px);font-weight:800;margin-top:4px;text-align:right}
+.vs .loc .n{text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:rgba(143,166,255,.7);font-weight:700}
+.rows{margin:0;padding:0;list-style:none}
+.rows li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid rgba(255,255,255,.1);font-size:15px;color:#cfd5e4}
+.rows li.tot{color:#fff;font-weight:700;font-size:16.5px}
+.rows li.tot .n{color:var(--peri)}
+.back-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:auto;padding-top:14px}
+.back-foot p{font-size:12.5px;color:#8f98ad;line-height:1.45}
+.back-foot .btn{flex:none;white-space:nowrap}
+.btn-line{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn-line:hover{background:rgba(255,255,255,.08)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:var(--deep)}
+@media (prefers-reduced-motion:reduce){
+  .flip{transition:none;transform:none!important}
+  .face{backface-visibility:visible}
+  .back{transform:none;visibility:hidden}
+  .flip.on .front{visibility:hidden}
+  .flip.on .back{visibility:visible}
+}
+
+.screen{margin-top:44px}
+.screen figure{margin:0;background:#fff;border-radius:14px;padding:8px;box-shadow:var(--shadow)}
+.screen img{border-radius:8px;width:100%;height:auto}
+.screen figcaption{font-size:14px;color:var(--mute);margin-top:10px;padding:0 4px}
+
+/* ---------- offer = the peak ---------- */
+.offer{background:var(--accent);color:#fff;position:relative;overflow:hidden}
+.offer::before{content:"";position:absolute;inset:0;background:var(--grain);opacity:.35;mix-blend-mode:soft-light;pointer-events:none}
+.offer .wrap{position:relative}
+.offer h2{font-size:clamp(34px,8.6vw,72px);line-height:1.05;letter-spacing:-.02em}
+.offer h2 .pk{display:table;color:#fff;background:var(--ink);padding:.04em .28em .14em;border-radius:12px;margin-top:.14em}
+.o-steps{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:0;counter-reset:o}
+.o-steps li{counter-increment:o;display:grid;grid-template-columns:56px 1fr;gap:14px;padding:20px 0;border-top:1px solid rgba(255,255,255,.28);font-size:18px;line-height:1.55}
+.o-steps li::before{content:counter(o);font:800 40px/1 var(--num);color:#fff}
+.o-steps li:last-child{border-bottom:1px solid rgba(255,255,255,.28)}
+.deadline{margin-top:30px;display:flex;align-items:center;gap:16px;background:#fff;color:var(--ink);border-radius:var(--r);padding:16px 18px;max-width:460px}
+.deadline .d{font:800 40px/1 var(--num);color:var(--accent);direction:ltr;flex:none}
+.deadline p{font-weight:700;font-size:16.5px;line-height:1.35}
+.offer .cta-block{margin-top:26px}
+.o-grid{display:flex;flex-direction:column}
+.o-grid>div:first-child{display:contents}
+.o-cta{order:3}
+
+/* ---------- FAQ ---------- */
+.faq{background:var(--bg)}
+.qa{margin-top:30px;display:grid;gap:0;border-top:1px solid #d5d9e2}
+.qa div{padding:20px 0;border-bottom:1px solid #d5d9e2}
+.qa h3{font-size:19px;line-height:1.35}
+.qa p{color:var(--ink2);margin-top:6px;font-size:16.5px}
+
+/* ---------- form (ink) ---------- */
+.join{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.join::before{content:"";position:absolute;inset:0;background:var(--grain);opacity:.45;mix-blend-mode:soft-light;pointer-events:none}
+.join .wrap{position:relative}
+.join .lead{color:#cfd5e4}
+.join-grid{display:grid;gap:28px}
+.form{background:#fff;color:var(--ink);border-radius:20px;padding:22px 18px;margin-top:28px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.fgrid{display:grid;gap:14px}
+.f label,.f .lab{display:block;font-size:14.5px;font-weight:700;margin-bottom:6px}
+.f input,.f select{width:100%;min-height:50px;border:1px solid #cfd4df;border-radius:10px;padding:12px 14px;font:16px var(--he);color:var(--ink);background:#fff}
+.f input:focus,.f select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(51,85,214,.18)}
+.f input[type=tel],.f input[type=email]{direction:ltr;text-align:right}
+.f input.bad{border-color:#c0392b}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{margin:0;font-weight:500;font-size:15px;cursor:pointer}
+.chips input{position:absolute;opacity:0;width:1px;height:1px}
+.chips span{display:inline-flex;align-items:center;min-height:42px;padding:8px 14px;border:1px solid #cfd4df;border-radius:30px;transition:background .15s,border-color .15s,color .15s}
+.chips input:checked+span{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700}
+.chips input:focus-visible+span{outline:3px solid var(--peri);outline-offset:2px}
+.form .btn{width:100%;margin-top:18px}
+.after{font-size:14.5px;color:var(--mute);margin-top:12px;text-align:center}
+.err{color:#c0392b;font-size:14.5px;margin-top:10px;display:none}
+.ok{display:none;text-align:center;padding:26px 6px}
+.ok i{display:grid;place-items:center;width:58px;height:58px;margin:0 auto 14px;border-radius:50%;background:var(--ok)}
+.ok h3{font-size:24px}
+.ok p{color:var(--ink2);margin-top:8px}
+.form.sent .fbody{display:none}
+.form.sent .ok{display:block}
+.join-side{display:none}
+
+footer{background:var(--ink);color:#8f98ad;border-top:1px solid rgba(255,255,255,.08);padding:22px 0;font-size:14.5px}
+footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer .logo{font-size:16px}
+footer .logo b{width:26px;height:26px;font-size:13px}
+
+/* ---------- small phones ---------- */
+@media (max-width:370px){
+  :root{--g:16px}
+  .top .btn-sm{padding:8px 12px;font-size:14px}
+  .front-foot{flex-direction:column;align-items:stretch}
+  .vs .n{font-size:24px}
+}
+
+/* ---------- tablet / desktop ---------- */
+@media (min-width:760px){
+  :root{--g:32px}
+  .sec{padding:96px 0}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .fgrid .full{grid-column:1/-1}
+  .form{padding:30px 28px}
+  .excl{grid-template-columns:200px 1fr;align-items:center;padding:30px}
+  .excl .slab{height:100%;min-height:150px}
+  .qa{grid-template-columns:1fr 1fr;column-gap:48px;border-top:0}
+  .qa div{border-top:1px solid #d5d9e2;border-bottom:0}
+}
+@media (min-width:1024px){
+  .hero-in{padding:56px 0 88px}
+  .hero-row{grid-template-columns:1.05fr 1fr;gap:64px;align-items:end;margin-top:36px}
+  .board-grid{gap:10px}
+  .get-head{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end}
+  .get-list{display:grid;grid-template-columns:1fr 1fr 1fr;column-gap:40px;border-top:0}
+  .get-list li{border-top:1px solid #d5d9e2;border-bottom:0;grid-template-columns:1fr;gap:16px;padding:26px 0 8px}
+  .how-grid{grid-template-columns:1fr 1.05fr;gap:72px;align-items:start}
+  .spec{position:sticky;top:32px}
+  .front .tilefield{min-height:340px}
+  .back{padding:30px 30px 24px}
+  .o-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:0 72px;align-items:start;margin-top:44px}
+  .o-grid>div:first-child{display:block}
+  .o-grid .deadline{margin-top:0}
+  .o-steps{margin-top:0}
+  .join-grid{grid-template-columns:.85fr 1.15fr;gap:72px;align-items:start}
+  .join .form{margin-top:0}
+  .join-side{display:block;margin-top:36px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="top">
+      <span class="logo" aria-label="Magic AI"><b>M</b>Magic AI</span>
+      <a class="btn btn-white btn-sm" href="#join">לשמוע על השותפות</a>
+    </div>
+
+    <div class="hero-in">
+      <p class="eyebrow">תוכנית השותפים של Magic AI למשרדי אדריכלות</p>
+      <h1>מתכננים במחירי מפעל.<span class="pk">מרוויחים מכל לקוח שמגיע איתכם.</span></h1>
+
+      <div class="hero-row">
+        <div>
+          <p class="sub">Magic AI מאחדת הזמנות של חברות בנייה רבות להזמנה אחת גדולה מול מפעלים בכל העולם. משרדי אדריכלות שמצטרפים כשותפים רואים מחיר מפעל וזמן אספקה כבר בשלב התכנון, ומקבלים חלק מההכנסה על כל לקוח שהם מביאים.</p>
+          <div class="cta-block">
+            <a class="btn btn-acc" href="#join">אני רוצה לשמוע על השותפות</a>
+            <span class="due">הגשת מועמדות עד 9 בדצמבר 2026</span>
+          </div>
+        </div>
+
+        <div class="board">
+          <div class="board-grid" aria-hidden="true">
+            <div class="sw sw-big m-trav"><span>אבן</span></div>
+            <div class="sw m-oak dark"><span>עץ</span></div>
+            <div class="sw m-brass"><span>פרזול</span></div>
+            <div class="sw m-tile"><span>אריחים</span></div>
+            <div class="sw m-basalt dark"><span>חיפוי</span></div>
+          </div>
+          <p class="board-cap"><b>קולקציות בלעדיות:</b> Magic AI מנהלת משא ומתן על זכויות בלעדיות למותגים ולקולקציות.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="sec get" aria-labelledby="get-h">
+  <div class="wrap">
+    <div class="get-head">
+      <h2 id="get-h">מה מקבלים שותפים</h2>
+    </div>
+    <ul class="get-list">
+      <li>
+        <i class="chip m-oak" aria-hidden="true"></i>
+        <div><h3>לקוחות ופרויקטים חדשים</h3><p>יזמים, קבלנים, משקיעים ולקוחות פרטיים, דרך מרקטפלייס השירותים של הפלטפורמה.</p></div>
+      </li>
+      <li>
+        <i class="chip m-terr" aria-hidden="true"></i>
+        <div><h3>הכנסה חוזרת</h3><p>חלק מוסכם מההכנסה של Magic AI על כל לקוח שהבאתם, גם על ההזמנות הבאות שלו לאורך תקופה מוסכמת.</p></div>
+      </li>
+      <li>
+        <i class="chip m-tile" aria-hidden="true"></i>
+        <div><h3>מחיר מפעל וזמן אספקה כבר בתכנון</h3><p>חומרים, ריהוט, כלים סניטריים, דלתות, חלונות וציוד ממפעלים בארץ ובעולם, ישר לתוך המפרט.</p></div>
+      </li>
+    </ul>
+
+    <!-- ⚠️ negotiations only; never "signed"; no brand names until the client OKs -->
+    <div class="excl">
+      <div class="slab m-brass" aria-hidden="true"></div>
+      <div>
+        <h3>קולקציות בלעדיות</h3>
+        <p>Magic AI מנהלת משא ומתן על זכויות בלעדיות למותגים ולקולקציות. אחרי החתימה, הן יהיו זמינות לשותפים.</p>
+        <span class="tag">בשלב משא ומתן</span>
+      </div>
+    </div>
+
+    <p class="strip">בלי תשלום חודשי קבוע. <span>המותג שלכם והלקוחות שלכם נשארים שלכם.</span></p>
+  </div>
+</section>
+
+<section class="sec how" aria-labelledby="how-h">
+  <div class="wrap">
+    <h2 id="how-h">מהמפרט שלכם להזמנה ממפעל</h2>
+
+    <div class="how-grid">
+      <div>
+        <ol class="steps">
+          <li><span>אתם מכניסים למפרט פריטים מהקטלוג של המפעלים.</span></li>
+          <li><span>Magic AI מאחדת את הביקוש עם הזמנות של חברות אחרות ומוציאה מכרז בין מפעלים בעולם.</span></li>
+          <li><span>הלקוח רואה את <b>שלושת המפעלים הטובים</b> לפי עלות מלאה עד נמל אשדוד, וזמן אספקה.</span></li>
+          <li><span>הלקוח מחליט ומשלם ישירות למפעל דרך הבנק שלו. הכסף לא עובר דרך Magic AI.</span></li>
+        </ol>
+        <p class="note">כל מוצר נבדק במפעל לפני המשלוח.</p>
+      </div>
+
+      <!-- SIGNATURE: one spec item, flipped. ⚠️ numbers = platform TEST data from screen s3 -->
+      <div class="spec">
+        <p class="spec-kicker">מתכננים במחירי מפעל,<span>לא במחירי אולם תצוגה.</span></p>
+        <div class="flip" id="flip">
+          <div class="face front" id="f-front">
+            <div class="tilefield">
+              <p class="lbl"><b>אריח פורצלן 60×60 ס״מ</b><span class="n">9 mm · R10</span> · שורה אחת מהמפרט</p>
+            </div>
+            <div class="front-foot">
+              <p>מה המחיר האמיתי של הפריט הזה?</p>
+              <button class="btn btn-ink btn-sm flip-btn" type="button" aria-controls="flip" aria-expanded="false" data-flip>להפוך את הדוגמה</button>
+            </div>
+          </div>
+
+          <div class="face back" id="f-back" aria-hidden="true">
+            <div class="back-h"><span>אריח פורצלן 60×60, למ״ר</span><span>מפעל A</span></div>
+            <div class="vs">
+              <div class="fac"><small>מחיר מפעל</small><span class="n">₪61.2</span></div>
+              <div class="loc"><small>המחיר שלכם היום</small><span class="n">₪100</span></div>
+            </div>
+            <ul class="rows">
+              <li><span>הובלה וביטוח</span><span class="n">₪10.8</span></li>
+              <li><span>מכס, אגרות ונמל</span><span class="n">₪9.9</span></li>
+              <li class="tot"><span>עלות מלאה עד נמל אשדוד</span><span class="n">₪81.9</span></li>
+              <li><span>זמן אספקה</span><span><span class="n">68</span> ימים</span></li>
+            </ul>
+            <div class="back-foot">
+              <p>דוגמה מתוך הפלטפורמה, על נתוני בדיקה. לא הצעת מחיר.</p>
+              <button class="btn btn-line btn-sm" type="button" aria-controls="flip" data-flip tabindex="-1">לחזור לדוגמה</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <figure>
+        <img src="img/s3-predlozhenie.jpg" width="1600" height="786" loading="lazy" alt="מסך ההצעה בפלטפורמה: אריח פורצלן 60×60 מול שלושה מפעלים, עם מחיר מפעל, הובלה, מכס, עלות מלאה וזמן אספקה">
+      </figure>
+      <figcaption>מסך ההצעה מהפלטפורמה: אותו פריט, שלושה מפעלים, עלות מלאה וזמן אספקה. נתוני בדיקה.</figcaption>
+    </div>
+  </div>
+</section>
+
+<section class="sec offer" aria-labelledby="offer-h">
+  <div class="wrap">
+    <h2 id="offer-h">מצטרפים כשותפים<span class="pk">בשלושה צעדים</span></h2>
+    <div class="o-grid">
+      <div>
+        <div class="deadline">
+          <span class="d">9.12</span>
+          <p>הגשת מועמדות עד 9 בדצמבר 2026</p>
+        </div>
+        <div class="cta-block o-cta">
+          <a class="btn btn-white" href="#join">אני רוצה לשמוע על השותפות</a>
+        </div>
+      </div>
+      <div>
+        <ol class="o-steps">
+          <li><span>משאירים פרטים בטופס.</span></li>
+          <li><span>מציגים לכם את הפלטפורמה ואת תנאי השותפות בפגישה אישית, בזום או במשרד שלנו בדיזנגוף 50, תל אביב.</span></li>
+          <li><span>סוגרים יחד את מודל השותפות שמתאים למשרד שלכם.</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec faq" aria-labelledby="faq-h">
+  <div class="wrap">
+    <h2 id="faq-h">שאלות שעולות</h2>
+    <div class="qa">
+      <div><h3>האם יש תשלום?</h3><p>אין תשלום חודשי קבוע. מרוויחים רק על עסקים שנוצרו ושולמו בפועל.</p></div>
+      <div><h3>מה קורה עם הלקוחות שלי?</h3><p>הלקוחות והמותג נשארים שלכם. הלקוח מחליט לבד על כל רכישה.</p></div>
+      <div><h3>ואם אני ממליץ על מוצר?</h3><p>ההמלצות נעשות לטובת הלקוח, עם גילוי נאות על עניין מסחרי כשהכללים מחייבים.</p></div>
+      <div><h3>מי מחזיק את הכסף?</h3><p>אף פעם לא Magic AI. הלקוח משלם למפעל דרך הבנק שלו.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec join" id="join" aria-labelledby="join-h">
+  <div class="wrap">
+    <div class="join-grid">
+      <div>
+        <h2 id="join-h">נשמח להכיר את המשרד שלכם</h2>
+        <p class="lead">נחזור אליכם לתיאום הצגה אישית.</p>
+        <p class="due" style="margin-top:14px">הגשת מועמדות עד 9 בדצמבר 2026</p>
+      </div>
+
+      <form class="form" id="form" novalidate>
+        <div class="fbody">
+          <div class="fgrid">
+            <div class="f"><label for="fn">שם מלא</label><input id="fn" name="name" autocomplete="name" required></div>
+            <div class="f"><label for="ff">שם המשרד</label><input id="ff" name="firm" autocomplete="organization" required></div>
+            <div class="f"><label for="fr">תפקיד</label><input id="fr" name="role" autocomplete="organization-title"></div>
+            <div class="f"><label for="fp">נייד</label><input id="fp" name="mobile" type="tel" inputmode="tel" autocomplete="tel" required></div>
+            <div class="f"><label for="fe">אימייל</label><input id="fe" name="email" type="email" autocomplete="email" required></div>
+            <div class="f"><label for="fs">כמה אדריכלים במשרד</label>
+              <select id="fs" name="size">
+                <option value="" selected disabled>בחירה</option>
+                <option>1–3</option><option>4–10</option><option>11–30</option><option>30+</option>
+              </select>
+            </div>
+            <fieldset class="f full" style="border:0;padding:0;margin:0">
+              <legend class="lab">סוגי פרויקטים עיקריים</legend>
+              <div class="chips">
+                <label><input type="checkbox" name="types" value="מגורים"><span>מגורים</span></label>
+                <label><input type="checkbox" name="types" value="התחדשות עירונית"><span>התחדשות עירונית</span></label>
+                <label><input type="checkbox" name="types" value="מסחר ומשרדים"><span>מסחר ומשרדים</span></label>
+                <label><input type="checkbox" name="types" value="מלונאות"><span>מלונאות</span></label>
+                <label><input type="checkbox" name="types" value="פנים"><span>פנים</span></label>
+              </div>
+            </fieldset>
+          </div>
+          <p class="err" id="err" role="alert">חסרים שם, שם המשרד, נייד או אימייל תקין. השדות המסומנים באדום.</p>
+          <button class="btn btn-acc" type="submit">שליחה</button>
+          <p class="after">נחזור אליכם לתיאום הצגה אישית.</p>
+        </div>
+        <div class="ok" role="status" aria-live="polite">
+          <i aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+          <h3>הפרטים התקבלו. תודה.</h3>
+          <p>נחזור אליכם לתיאום הצגה אישית.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo"><b>M</b>Magic AI</span>
+    <span>דיזנגוף 50, תל אביב</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var flip=document.getElementById('flip'),front=document.getElementById('f-front'),back=document.getElementById('f-back');
+  var btns=flip.querySelectorAll('[data-flip]');
+  function set(on){
+    if(window.__hint) window.__hint.cancel();
+    flip.classList.toggle('on',on);
+    front.setAttribute('aria-hidden',on?'true':'false');
+    back.setAttribute('aria-hidden',on?'false':'true');
+    btns[0].setAttribute('aria-expanded',on?'true':'false');
+    btns[0].tabIndex=on?-1:0; btns[1].tabIndex=on?0:-1;
+    (on?btns[1]:btns[0]).focus({preventScroll:true});
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){set(!flip.classList.contains('on'))})});
+  front.querySelector('.tilefield').addEventListener('click',function(){set(true)});
+  front.querySelector('.tilefield').style.cursor='pointer';
+
+  // one-time hint: the card leans as it comes into view, so it reads as something you can turn
+  var still=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!still && 'IntersectionObserver' in window && flip.animate){
+    var hint=null;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting && e.intersectionRatio>.6){
+          io.disconnect();
+          if(!flip.classList.contains('on')) hint=flip.animate([{transform:'rotateY(0)'},{transform:'rotateY(-22deg)'},{transform:'rotateY(0)'}],{duration:1100,easing:'cubic-bezier(.3,.7,.3,1)',delay:250}); window.__hint=hint;
+        }
+      });
+    },{threshold:[.6]});
+    io.observe(flip);
+  }
+
+  // form: success state only, no endpoint yet
+  var form=document.getElementById('form'),err=document.getElementById('err');
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var need=['fn','ff','fp','fe'],bad=false;
+    need.forEach(function(id){
+      var el=document.getElementById(id),v=el.value.trim();
+      var ok=v.length>1 && (id!=='fe'||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) && (id!=='fp'||v.replace(/\D/g,'').length>=9);
+      el.classList.toggle('bad',!ok); el.setAttribute('aria-invalid',ok?'false':'true'); if(!ok) bad=true;
+    });
+    err.style.display=bad?'block':'none';
+    if(bad){form.querySelector('.bad').focus();return;}
+    form.classList.add('sent');
+    form.querySelector('.ok').setAttribute('tabindex','-1');
+    form.querySelector('.ok').focus();
+  });
+})();
+</script>
+</body>
+</html>

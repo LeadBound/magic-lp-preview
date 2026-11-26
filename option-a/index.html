@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Magic AI, תוכנית השותפים למשרדי אדריכלות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  Option A · "Studio / blueprint"
+  Signature: the spec sheet. One spec line resolves into three factory offers, each drawn as a
+  layered bar (factory price / freight / duty and port = full cost to Ashdod) against a hatched
+  showroom bar, on a scale bar.
+  ⚠️ Numbers in the spec card are the platform's own EXAMPLE data from screen s3-predlozhenie
+     (tile 60×60, Factory A/B/C, Foshan/Jinjiang/Morbi). "עד אשדוד" = factory + freight + duty/port
+     columns of that screen. The ₪100 line is "your price" on s3; showing it as "מחיר אולם תצוגה"
+     needs the client's OK. The card is labelled "נתוני דוגמה" on the page.
+-->
+<style>
+:root{
+  --ink:#0e1424;--ink2:#3a4256;--mute:#6b7385;--line:#e4e7ee;--bg:#f7f8fa;--card:#fff;
+  --accent:#3355d6;--accent-soft:#eef2ff;--ok:#16a34a;
+  --navy:#1f2a44;--navy2:#26304a;--sky:#8fa6ff;--haze:#c7d0f5;
+  --r:16px;--shadow:0 1px 2px rgba(14,20,36,.04),0 8px 24px rgba(14,20,36,.06);
+  --gut:16px;--max:1200px;
+  --he:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --num:"Manrope","Heebo",system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);font-family:var(--he);font-size:17px;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+h1,h2,h3,p{margin:0}
+.num{font-family:var(--num);font-feature-settings:"tnum" 1,"lnum" 1}
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,label:focus-within{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ---------- header ---------- */
+.hdr{border-bottom:1px solid var(--line);background:#fff;position:relative}
+.hdr .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;color:var(--ink);direction:ltr}
+.logo b{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--ink);color:#fff;font-size:15px;font-family:var(--num)}
+.hdr-ref{font-size:13px;color:var(--mute)}
+/* ruler under the header: fine ticks every 8px, a longer one every 40px */
+.ruler{height:9px;border-bottom:1px solid var(--line);
+  background:
+   repeating-linear-gradient(to left,var(--haze) 0 1px,transparent 1px 40px) top/100% 9px no-repeat,
+   repeating-linear-gradient(to left,var(--line) 0 1px,transparent 1px 8px) top/100% 5px no-repeat;}
+
+/* ---------- section label: sheet number + rule ---------- */
+.sheet{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--mute);margin-bottom:18px}
+.sheet .num{font-weight:700;color:var(--ink);font-size:13px;letter-spacing:.02em}
+.sheet .num em{font-style:normal;color:var(--mute);font-weight:500}
+.sheet::after{content:"";flex:1;height:1px;background:var(--line)}
+.h2{font-weight:800;font-size:clamp(28px,6.6vw,44px);line-height:1.15;letter-spacing:-.01em}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:14px 26px;border-radius:10px;
+  background:var(--ink);color:#fff;border:1px solid var(--ink);font:700 17px/1.2 var(--he);text-decoration:none;cursor:pointer;
+  transition:background .2s,transform .15s;touch-action:manipulation}
+.btn:hover{background:var(--navy)}
+.btn:active{transform:scale(.98)}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:36px 0 48px;
+  background:
+   linear-gradient(#fff 0,rgba(255,255,255,0) 120px),
+   repeating-linear-gradient(to left,rgba(51,85,214,.06) 0 1px,transparent 1px 40px),
+   repeating-linear-gradient(to bottom,rgba(51,85,214,.06) 0 1px,transparent 1px 40px);}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:var(--ink2);margin-bottom:18px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--ink)}
+.h1{font-weight:800;font-size:clamp(30px,8.6vw,76px);line-height:1.06;letter-spacing:-.02em}
+.h1 .pk{display:block;color:var(--accent)}
+.hero-grid{display:grid;gap:32px;margin-top:26px}
+.sub{font-size:18px;line-height:1.65;color:var(--ink2);max-width:36em}
+.cta-row{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:26px}
+.cta-note{font-size:14px;color:var(--mute);display:flex;align-items:center;gap:8px}
+.cta-note .num{color:var(--ink);font-weight:700}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+
+/* ---------- the spec card (signature) ---------- */
+.spec{margin:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.spec-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px;color:var(--mute)}
+.spec-head b{color:var(--ink);font-weight:700}
+.tag{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:500;white-space:nowrap}
+.spec-line{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:baseline;padding:16px;border-bottom:1px dashed var(--line);position:relative}
+.spec-line .ln{font-size:13px;color:var(--mute);font-weight:700}
+.spec-line .item b{display:block;font-size:18px;font-weight:700;line-height:1.3}
+.spec-line .item span{font-size:14px;color:var(--mute)}
+.spec-line .qty{font-size:14px;font-weight:700;white-space:nowrap}
+.spec-body{position:relative;padding:14px 16px 6px 16px;padding-inline-start:34px}
+/* leader line from the spec line down into the offers */
+.lead{position:absolute;inset-inline-start:18px;top:0;bottom:22px;width:1px;background:var(--ink);transform-origin:top}
+.lead::after{content:"";position:absolute;bottom:-4px;left:-3px;width:7px;height:7px;border-radius:50%;background:var(--ink)}
+.spec-cap{font-size:13px;color:var(--ink2);margin-bottom:10px}
+.spec-cap b{font-weight:700;color:var(--ink)}
+.scale{position:relative;height:22px;margin-bottom:6px;direction:rtl}
+.scale::before{content:"";position:absolute;inset:auto 0 0 0;height:6px;border-bottom:1px solid var(--ink2);
+  background:repeating-linear-gradient(to left,var(--ink2) 0 1px,transparent 1px 10%) bottom/100% 6px no-repeat}
+.scale span{position:absolute;top:0;font-size:11px;color:var(--mute);transform:translateX(50%)}
+.scale span:first-child{transform:none}
+.scale span:last-child{transform:translateX(0);left:0}
+.offers{list-style:none;margin:0;padding:0}
+.off{padding:12px 0;border-bottom:1px solid var(--line)}
+.off-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.f-name{font-weight:700;font-size:16px}
+.f-name small{font-weight:400;color:var(--mute);font-size:13px;margin-inline-start:6px}
+.f-days{font-size:13px;color:var(--ink2);white-space:nowrap}
+.f-days .num{font-weight:700;color:var(--ink);font-size:14px}
+.bar{height:12px;margin:9px 0 8px;display:flex;direction:rtl}
+.bar i{display:block;height:100%;transform-origin:right center}
+.bar .f{background:var(--ink)}
+.bar .s{background:var(--accent)}
+.bar .d{background:var(--haze)}
+.off.best .bar .f{background:var(--ink)}
+.figs{display:flex;gap:18px;font-size:13px;color:var(--mute);flex-wrap:wrap}
+.figs .num{color:var(--ink);font-weight:700;font-size:15px;margin-inline-start:4px}
+.figs .tot .num{color:var(--accent)}
+.show{padding:12px 0 14px}
+.show .bar i{width:100%;background:repeating-linear-gradient(-45deg,var(--ink2) 0 1px,transparent 1px 5px);border:1px solid var(--ink2);}
+.show-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.show-top b{font-weight:700;font-size:15px}
+.show-top .num{font-weight:700;font-size:15px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;padding:10px 16px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--mute)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:8px;display:inline-block}
+
+/* motion: only when JS is on and motion is allowed */
+.js .spec .lead{transform:scaleY(0);transition:transform .7s var(--ease) .25s}
+.js .spec .off,.js .spec .show{opacity:0;transform:translateY(6px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.js .spec .bar i{transform:scaleX(0);transition:transform .8s var(--ease)}
+.js .spec .off:nth-child(1){transition-delay:.75s}.js .spec .off:nth-child(1) .bar i{transition-delay:.95s}
+.js .spec .off:nth-child(2){transition-delay:.95s}.js .spec .off:nth-child(2) .bar i{transition-delay:1.15s}
+.js .spec .off:nth-child(3){transition-delay:1.15s}.js .spec .off:nth-child(3) .bar i{transition-delay:1.35s}
+.js .spec .show{transition-delay:1.6s}.js .spec .show .bar i{transition-delay:1.8s}
+.js .spec.in .lead{transform:none}
+.js .spec.in .off,.js .spec.in .show{opacity:1;transform:none}
+.js .spec.in .bar i{transform:none}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .spec .lead,.js .spec .off,.js .spec .show,.js .spec .bar i{transform:none!important;opacity:1!important;transition:none!important}
+  .shot img{transition:none!important}
+}
+
+/* ---------- 01 partners get ---------- */
+.sec{padding:64px 0}
+.gets{display:grid;margin-top:28px;border-top:1px solid var(--ink)}
+.get{padding:22px 0;border-bottom:1px solid var(--line);position:relative}
+.get h3{font-size:21px;font-weight:700;line-height:1.3;margin-bottom:6px}
+.get p{color:var(--ink2);font-size:17px}
+.get .pend{display:inline-block;font-size:12px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:1px 8px;margin-inline-start:8px;vertical-align:middle;font-weight:500}
+.strip{margin-top:28px;display:grid;gap:0;border:1px solid var(--ink);border-radius:10px;overflow:hidden}
+.strip p{padding:16px 18px;font-weight:700;font-size:18px;line-height:1.4;display:flex;gap:12px;align-items:center}
+.strip p+p{border-top:1px solid var(--ink)}
+.strip svg{width:20px;height:20px;flex:none;color:var(--accent)}
+
+/* ---------- 02 how it works ---------- */
+.how{background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.how-grid{display:grid;gap:28px;margin-top:28px}
+.steps{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.step{border-bottom:1px solid var(--line)}
+.step button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:44px 1fr;gap:10px;width:100%;padding:16px 0;cursor:pointer;align-items:start;min-height:56px}
+.step .n{font-family:var(--num);font-weight:700;font-size:15px;width:32px;height:32px;border:1px solid var(--ink2);border-radius:50%;display:grid;place-items:center;color:var(--ink2);transition:background .2s,color .2s,border-color .2s}
+.step .t{font-size:17px;line-height:1.55;color:var(--ink2);padding-top:3px}
+.step .t b{color:var(--ink);font-weight:700}
+.step button[aria-pressed="true"] .n{background:var(--accent);border-color:var(--accent);color:#fff}
+.step button[aria-pressed="true"] .t{color:var(--ink)}
+.step button:hover .n{border-color:var(--accent);color:var(--accent)}
+.step button[aria-pressed="true"]:hover .n{color:#fff}
+.step button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.note{display:flex;gap:10px;align-items:center;margin-top:18px;font-weight:700;font-size:16px}
+.note svg{width:22px;height:22px;color:var(--ok);flex:none}
+.frame{position:relative;margin:0}
+/* crop marks at the corners, like a print sheet */
+.frame::before,.frame::after{content:"";position:absolute;width:18px;height:18px;border-color:var(--ink2);border-style:solid;pointer-events:none}
+.frame::before{top:-8px;right:-8px;border-width:1px 1px 0 0}
+.frame::after{bottom:-8px;left:-8px;border-width:0 0 1px 1px}
+.shot{position:relative;aspect-ratio:1335/650;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#eef1f6;box-shadow:var(--shadow);direction:ltr}
+.shot img{position:absolute;top:0;left:-19.85%;width:119.85%;max-width:none;height:auto;opacity:0;transition:opacity .35s ease}
+.shot img.on{opacity:1}
+.frame figcaption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--mute)}
+.frame figcaption b{color:var(--ink);font-weight:700}
+
+/* ---------- 03 offer (the peak): a blueprint sheet ---------- */
+.offer{position:relative;background:var(--navy);color:#fff;padding:72px 0 76px;overflow:hidden;
+  background-image:
+   repeating-linear-gradient(to left,rgba(143,166,255,.13) 0 1px,transparent 1px 120px),
+   repeating-linear-gradient(to bottom,rgba(143,166,255,.13) 0 1px,transparent 1px 120px),
+   repeating-linear-gradient(to left,rgba(143,166,255,.05) 0 1px,transparent 1px 24px),
+   repeating-linear-gradient(to bottom,rgba(143,166,255,.05) 0 1px,transparent 1px 24px);}
+.offer .sheet{color:var(--haze)}
+.offer .sheet .num{color:#fff}.offer .sheet .num em{color:var(--haze)}
+.offer .sheet::after{background:rgba(199,208,245,.3)}
+.offer h2{font-weight:800;font-size:clamp(34px,8.6vw,64px);line-height:1.08;letter-spacing:-.02em}
+.offer h2 .pk{display:block;color:var(--sky)}
+.o-steps{list-style:none;margin:40px 0 0;padding:0;display:grid;gap:0;position:relative}
+.o-step{position:relative;padding:0 0 30px;padding-inline-start:58px}
+.o-step:last-child{padding-bottom:0}
+.o-step .n{position:absolute;inset-inline-start:0;top:-4px;width:40px;height:40px;border:1px solid var(--sky);border-radius:50%;display:grid;place-items:center;font-family:var(--num);font-weight:700;font-size:17px;color:var(--sky);background:var(--navy)}
+/* dimension line joining the three steps */
+.o-step:not(:last-child)::before{content:"";position:absolute;inset-inline-start:20px;top:36px;bottom:-2px;width:1px;background:rgba(143,166,255,.55)}
+.o-step p{font-size:19px;line-height:1.5;color:#e7ebfb}
+.o-step p b{color:#fff;font-weight:700}
+.o-foot{display:flex;flex-direction:column;align-items:flex-start;gap:22px;margin-top:40px}
+.stamp{display:inline-grid;grid-template-columns:auto auto;align-items:center;border:1px solid var(--sky);border-radius:8px;overflow:hidden}
+.stamp span{padding:10px 14px;font-size:15px;color:var(--haze)}
+.stamp b{padding:10px 16px;font-family:var(--num);font-weight:800;font-size:20px;color:#fff;background:rgba(143,166,255,.16);border-inline-start:1px solid var(--sky);white-space:nowrap}
+.btn.light{background:#fff;color:var(--ink);border-color:#fff}
+.btn.light:hover{background:var(--accent-soft)}
+
+/* ---------- 04 FAQ ---------- */
+.faq{display:grid;margin-top:28px;border-top:1px solid var(--ink)}
+.qa{padding:20px 0;border-bottom:1px solid var(--line)}
+.qa h3{font-size:19px;font-weight:700;margin-bottom:4px}
+.qa p{color:var(--ink2)}
+
+/* ---------- 05 form as a drawing title block ---------- */
+.form-sec{background:var(--bg);border-top:1px solid var(--line)}
+.tb{margin-top:28px;background:#fff;border:1.5px solid var(--ink);border-radius:var(--r);overflow:hidden}
+.tb-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1.5px solid var(--ink);font-size:13px;color:var(--mute)}
+.tb-grid{display:grid;grid-template-columns:1fr}
+.cell{display:block;position:relative;padding:10px 16px 8px;border-bottom:1px solid var(--line);min-height:70px;cursor:text}
+.cell:focus-within{background:var(--accent-soft);outline:none}
+.cell .lb{display:block;font-size:13px;color:var(--mute);font-weight:500}
+.cell .lb i{font-style:normal;color:var(--accent)}
+.cell input:not([type=checkbox]),.cell select{all:unset;box-sizing:border-box;display:block;width:100%;font:500 18px/1.4 var(--he);color:var(--ink);padding:6px 0 4px;min-height:36px}
+.cell input[type=tel],.cell input[type=email]{direction:ltr;text-align:right}
+.cell select{cursor:pointer;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%233a4256' stroke-width='1.5'/%3E%3C/svg%3E") left 2px center no-repeat;padding-left:22px}
+.cell .err{display:none;font-size:13px;color:#b42318;padding-top:2px}
+.cell.bad .err{display:block}
+.cell.bad .lb{color:#b42318}
+fieldset.cell{border:0;border-bottom:1px solid var(--line);margin:0;min-width:0;cursor:default}
+fieldset.cell legend{padding:0;float:right;width:100%;font-size:13px;color:var(--mute);font-weight:500}
+.chips{clear:both;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0 6px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;width:1px;height:1px;margin:0;bottom:0;right:50%}
+.chip span{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border:1px solid #cfd4df;border-radius:999px;font-size:16px;font-weight:500;color:var(--ink2);transition:background .15s,color .15s,border-color .15s;cursor:pointer}
+.chip input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.tb-foot{display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:16px}
+.tb-foot .btn{width:100%}
+.tb-foot p{font-size:15px;color:var(--ink2);text-align:center}
+.done{display:none;padding:40px 20px 44px;text-align:center}
+.done svg{width:48px;height:48px;color:var(--ok);margin:0 auto 14px}
+.done h3{font-size:26px;font-weight:800;margin-bottom:6px}
+.done p{color:var(--ink2)}
+.tb.sent form{display:none}
+.tb.sent .done{display:block}
+
+/* ---------- footer ---------- */
+.ftr{border-top:1px solid var(--line);padding:22px 0 30px;background:#fff}
+.ftr .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.ftr p{font-size:14px;color:var(--mute)}
+
+/* ---------- small phones ---------- */
+@media (max-width:380px){
+  .spec-head{flex-wrap:wrap}
+  .figs{gap:12px}
+  .stamp{grid-template-columns:1fr}
+  .eyebrow{font-size:14px}
+  .spec-line .item b{font-size:17px}
+  .stamp b{border-inline-start:0;border-top:1px solid var(--sky)}
+}
+
+/* ---------- tablet+ ---------- */
+@media (min-width:720px){
+  :root{--gut:32px}
+  .gets{grid-template-columns:1fr 1fr}
+  .get{padding:26px 0 26px 28px}
+  .get:nth-child(2n){padding:26px 28px 26px 0;border-inline-start:1px solid var(--line)}
+  .strip{grid-template-columns:1fr 1fr}
+  .strip p+p{border-top:0;border-inline-start:1px solid var(--ink)}
+  .faq{grid-template-columns:1fr 1fr;column-gap:40px}
+  .tb-grid{grid-template-columns:1fr 1fr}
+  .tb-grid .cell:nth-child(odd){border-inline-end:1px solid var(--line)}
+  .tb-grid .wide{grid-column:1/-1;border-inline-end:0!important}
+  .tb-foot{flex-direction:row;align-items:center;justify-content:space-between}
+  .tb-foot .btn{width:auto;min-width:220px}
+  .tb-foot p{text-align:start}
+  .o-foot{flex-direction:row;align-items:center;justify-content:space-between}
+}
+@media (min-width:1024px){
+  body{font-size:18px}
+  .hero{padding:44px 0 88px}
+  .hero-grid{grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:64px;align-items:start;margin-top:40px}
+  .sub{font-size:20px}
+  .sec{padding:104px 0}
+  .head-row{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:end}
+  .how-grid{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px;align-items:start}
+  .spec-line .item b{font-size:20px}
+  .offer{padding:112px 0}
+  .o-steps{grid-template-columns:repeat(3,1fr);gap:40px;margin-top:64px}
+  .o-step{padding:64px 0 0 0;padding-inline-start:0}
+  .o-step .n{top:0;width:44px;height:44px}
+  /* horizontal dimension line across the three steps */
+  .o-steps::before{content:"";position:absolute;top:22px;right:22px;left:0;height:1px;background:rgba(143,166,255,.55)}
+  .o-steps::after{content:"";position:absolute;top:15px;left:0;width:1px;height:15px;background:rgba(143,166,255,.55)}
+  .o-step:not(:last-child)::before{display:none}
+  .o-step p{font-size:21px;max-width:18em}
+  .o-foot{margin-top:72px;padding-top:32px;border-top:1px solid rgba(199,208,245,.25)}
+  .tb-grid{grid-template-columns:repeat(3,1fr)}
+  .tb-grid .cell:nth-child(odd){border-inline-end:0}
+  .tb-grid .cell{border-inline-end:1px solid var(--line)}
+  .tb-grid .cell:nth-child(3n){border-inline-end:0}
+  .tb-grid .c-arch{grid-column:span 1}
+  .tb-grid .wide{grid-column:span 2}
+}
+
+/* phones: zoom the platform screen onto its table so it is readable */
+@media (max-width:719px){
+  .shot{aspect-ratio:900/470}
+  .shot img{left:auto;width:177.8%;margin-left:-32.2%;margin-top:-10%;position:absolute;top:0}
+}
+@media (min-width:1024px){
+  .off{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:20px;align-items:baseline;padding:10px 0}
+  .off-top{grid-column:1;grid-row:1}
+  .figs{grid-column:2;grid-row:1;gap:14px}
+  .bar{grid-column:1/-1;grid-row:2;margin:8px 0 2px}
+  .tb-grid .wide{grid-column:1/-1}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+
+<header class="hdr">
+  <div class="wrap">
+    <span class="logo" aria-label="Magic AI"><b>M</b>Magic AI</span>
+  </div>
+  <div class="ruler" aria-hidden="true"></div>
+</header>
+
+<main>
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">תוכנית השותפים של Magic AI למשרדי אדריכלות</p>
+    <h1 class="h1">מתכננים במחירי מפעל.<span class="pk">מרוויחים מכל לקוח שמגיע איתכם.</span></h1>
+
+    <div class="hero-grid">
+      <div>
+        <p class="sub">Magic AI מאחדת הזמנות של חברות בנייה רבות להזמנה אחת גדולה מול מפעלים בכל העולם. משרדי אדריכלות שמצטרפים כשותפים רואים מחיר מפעל וזמן אספקה כבר בשלב התכנון, ומקבלים חלק מההכנסה על כל לקוח שהם מביאים.</p>
+        <div class="cta-row">
+          <a class="btn" href="#form">אני רוצה לשמוע על השותפות</a>
+          <p class="cta-note"><span class="dot" aria-hidden="true"></span>הגשת מועמדות עד <span class="num">9.12.2026</span></p>
+        </div>
+      </div>
+
+      <!-- SIGNATURE: one spec line → three factory offers vs the showroom price -->
+      <figure class="spec" id="spec" aria-label="דוגמה: שורה אחת מהמפרט מקבלת שלוש הצעות ממפעלים, מול מחיר אולם תצוגה">
+        <div class="spec-head"><span><b>מפרט</b>, שורה 1</span><span class="tag">נתוני דוגמה מהפלטפורמה</span></div>
+        <div class="spec-line">
+          <span class="ln num">01</span>
+          <div class="item"><b>ריצוף פורצלן 60×60 ס״מ</b><span>9 מ״מ, R10, מט</span></div>
+          <span class="qty num" dir="ltr">12,000 m²</span>
+        </div>
+        <div class="spec-body">
+          <span class="lead" aria-hidden="true"></span>
+          <p class="spec-cap"><b>3 המפעלים הטובים</b>, לפי עלות מלאה עד נמל אשדוד, למ״ר</p>
+          <div class="scale" aria-hidden="true"><span class="num">₪0</span><span class="num" style="right:50%">₪50</span><span class="num">₪100</span></div>
+          <ol class="offers">
+            <li class="off best">
+              <div class="off-top"><span class="f-name">מפעל A<small>פושאן, סין</small></span><span class="f-days">אספקה <span class="num">68</span> ימים</span></div>
+              <div class="bar" aria-hidden="true"><i class="f" style="width:61.2%"></i><i class="s" style="width:10.8%"></i><i class="d" style="width:9.9%"></i></div>
+              <div class="figs"><span>מחיר מפעל<span class="num">₪61.2</span></span><span class="tot">עד אשדוד<span class="num">₪81.9</span></span></div>
+            </li>
+            <li class="off">
+              <div class="off-top"><span class="f-name">מפעל B<small>ג׳ינג׳יאנג, סין</small></span><span class="f-days">אספקה <span class="num">75</span> ימים</span></div>
+              <div class="bar" aria-hidden="true"><i class="f" style="width:62.9%"></i><i class="s" style="width:10.8%"></i><i class="d" style="width:9.9%"></i></div>
+              <div class="figs"><span>מחיר מפעל<span class="num">₪62.9</span></span><span class="tot">עד אשדוד<span class="num">₪83.6</span></span></div>
+            </li>
+            <li class="off">
+              <div class="off-top"><span class="f-name">מפעל C<small>מורבי, הודו</small></span><span class="f-days">אספקה <span class="num">82</span> ימים</span></div>
+              <div class="bar" aria-hidden="true"><i class="f" style="width:61.8%"></i><i class="s" style="width:13.1%"></i><i class="d" style="width:10.3%"></i></div>
+              <div class="figs"><span>מחיר מפעל<span class="num">₪61.8</span></span><span class="tot">עד אשדוד<span class="num">₪85.2</span></span></div>
+            </li>
+          </ol>
+          <div class="show">
+            <div class="show-top"><b>מחיר אולם תצוגה</b><span class="num">₪100</span></div>
+            <div class="bar" aria-hidden="true"><i></i></div>
+          </div>
+        </div>
+        <div class="legend" aria-hidden="true">
+          <span><i style="background:var(--ink)"></i>מחיר מפעל</span>
+          <span><i style="background:var(--accent)"></i>הובלה וביטוח</span>
+          <span><i style="background:var(--haze)"></i>מכס, עמלות ונמל</span>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 01 WHAT PARTNERS GET ================= -->
+<section class="sec" aria-labelledby="h-gets">
+  <div class="wrap">
+    <p class="sheet"><span class="num" dir="ltr">01 <em>/ 05</em></span></p>
+    <h2 class="h2" id="h-gets">מה מקבלים שותפים</h2>
+    <div class="gets">
+      <div class="get">
+        <h3>לקוחות ופרויקטים חדשים</h3>
+        <p>יזמים, קבלנים, משקיעים ולקוחות פרטיים, דרך מרקטפלייס השירותים של הפלטפורמה.</p>
+      </div>
+      <div class="get">
+        <h3>הכנסה חוזרת</h3>
+        <p>חלק מוסכם מההכנסה של Magic AI על כל לקוח שהבאתם, גם על ההזמנות הבאות שלו לאורך תקופה מוסכמת.</p>
+      </div>
+      <div class="get">
+        <h3>מחיר מפעל וזמן אספקה כבר בתכנון</h3>
+        <p>חומרים, ריהוט, כלים סניטריים, דלתות, חלונות וציוד ממפעלים בארץ ובעולם, ישר לתוך המפרט.</p>
+      </div>
+      <!-- ⚠️ client to confirm: negotiations only, never "signed"; no brand names (Margraf / Olivari) without OK -->
+      <div class="get">
+        <h3>קולקציות בלעדיות</h3>
+        <p>Magic AI מנהלת משא ומתן על זכויות בלעדיות למותגים ולקולקציות. אחרי החתימה, הן יהיו זמינות לשותפים.</p>
+      </div>
+    </div>
+    <div class="strip">
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.5 9"/></svg>בלי תשלום חודשי קבוע.</p>
+      <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.5 9"/></svg>המותג שלכם והלקוחות שלכם נשארים שלכם.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 HOW IT WORKS ================= -->
+<section class="sec how" aria-labelledby="h-how">
+  <div class="wrap">
+    <p class="sheet"><span class="num" dir="ltr">02 <em>/ 05</em></span></p>
+    <h2 class="h2" id="h-how">מהמפרט שלכם להזמנה ממפעל</h2>
+    <div class="how-grid">
+      <div>
+        <ol class="steps" id="steps">
+          <li class="step"><button type="button" data-shot="0" aria-pressed="false" aria-controls="shot"><span class="n">1</span><span class="t">אתם מכניסים למפרט פריטים מהקטלוג של המפעלים.</span></button></li>
+          <li class="step"><button type="button" data-shot="1" aria-pressed="false" aria-controls="shot"><span class="n">2</span><span class="t">Magic AI מאחדת את הביקוש עם הזמנות של חברות אחרות ומוציאה מכרז בין מפעלים בעולם.</span></button></li>
+          <li class="step"><button type="button" data-shot="2" aria-pressed="true" aria-controls="shot"><span class="n">3</span><span class="t">הלקוח רואה את <b>שלושת המפעלים הטובים</b> לפי עלות מלאה עד נמל אשדוד, וזמן אספקה.</span></button></li>
+          <li class="step"><button type="button" data-shot="3" aria-pressed="false" aria-controls="shot"><span class="n">4</span><span class="t">הלקוח מחליט ומשלם ישירות למפעל דרך הבנק שלו. <b>הכסף לא עובר דרך Magic AI.</b></span></button></li>
+        </ol>
+        <p class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M8.5 12l2.4 2.4L15.5 10"/></svg>כל מוצר נבדק במפעל לפני המשלוח.</p>
+      </div>
+      <figure class="frame">
+        <div class="shot" id="shot" aria-live="polite">
+          <img src="img/s1-zayavka.jpg" alt="מסך הפלטפורמה: בקשת רכש חדשה, שורות מפרט שזוהו מקובץ אקסל" width="1600" height="786" loading="lazy">
+          <img src="img/s2-tender.jpg" alt="מסך הפלטפורמה: מכרז פעיל בין מפעלים, הזמנה מאוחדת עם חברות אחרות" width="1600" height="786" loading="lazy">
+          <img class="on" src="img/s3-predlozhenie.jpg" alt="מסך הפלטפורמה: שלוש ההצעות הטובות ממפעלים, מחיר מפעל, עלות מלאה וזמן אספקה" width="1600" height="786">
+          <img src="img/s4-sdelka.jpg" alt="מסך הפלטפורמה: עסקה מול המפעל, מימון דרך הבנק של הלקוח" width="1600" height="786" loading="lazy">
+        </div>
+        <figcaption><span><b>מסך אמיתי מהפלטפורמה</b>, על נתוני דוגמה</span><span>לחצו על שלב כדי לראות את המסך שלו</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 THE OFFER (peak) ================= -->
+<section class="offer" aria-labelledby="h-offer">
+  <div class="wrap">
+    <p class="sheet"><span class="num" dir="ltr">03 <em>/ 05</em></span></p>
+    <h2 id="h-offer">מצטרפים כשותפים<span class="pk">בשלושה צעדים</span></h2>
+    <ol class="o-steps">
+      <li class="o-step"><span class="n">1</span><p><b>משאירים פרטים בטופס.</b></p></li>
+      <li class="o-step"><span class="n">2</span><p>מציגים לכם את הפלטפורמה ואת תנאי השותפות <b>בפגישה אישית</b>, בזום או במשרד שלנו בדיזנגוף 50, תל אביב.</p></li>
+      <li class="o-step"><span class="n">3</span><p>סוגרים יחד את <b>מודל השותפות</b> שמתאים למשרד שלכם.</p></li>
+    </ol>
+    <div class="o-foot">
+      <p class="stamp"><span>הגשת מועמדות עד</span><b>9 בדצמבר 2026</b></p>
+      <a class="btn light" href="#form">אני רוצה לשמוע על השותפות</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 FAQ ================= -->
+<section class="sec" aria-labelledby="h-faq">
+  <div class="wrap">
+    <p class="sheet"><span class="num" dir="ltr">04 <em>/ 05</em></span></p>
+    <h2 class="h2" id="h-faq">שאלות שעולות</h2>
+    <div class="faq">
+      <div class="qa"><h3>האם יש תשלום?</h3><p>אין תשלום חודשי קבוע. מרוויחים רק על עסקים שנוצרו ושולמו בפועל.</p></div>
+      <div class="qa"><h3>מה קורה עם הלקוחות שלי?</h3><p>הלקוחות והמותג נשארים שלכם. הלקוח מחליט לבד על כל רכישה.</p></div>
+      <div class="qa"><h3>ואם אני ממליץ על מוצר?</h3><p>ההמלצות נעשות לטובת הלקוח, עם גילוי נאות על עניין מסחרי כשהכללים מחייבים.</p></div>
+      <div class="qa"><h3>מי מחזיק את הכסף?</h3><p>אף פעם לא Magic AI. הלקוח משלם למפעל דרך הבנק שלו.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 FORM (title block) ================= -->
+<section class="sec form-sec" id="form" aria-labelledby="h-form">
+  <div class="wrap">
+    <p class="sheet"><span class="num" dir="ltr">05 <em>/ 05</em></span></p>
+    <h2 class="h2" id="h-form">נשמח להכיר את המשרד שלכם</h2>
+    <div class="tb" id="tb">
+      <div class="tb-head"><span>פרטי המשרד</span><span>הגשת מועמדות עד <span class="num" style="color:var(--ink);font-weight:700">9.12.2026</span></span></div>
+      <form id="lead" novalidate>
+        <div class="tb-grid">
+          <label class="cell"><span class="lb">שם מלא <i>*</i></span><input name="name" autocomplete="name" required><span class="err">נא למלא שם מלא</span></label>
+          <label class="cell"><span class="lb">שם המשרד <i>*</i></span><input name="firm" autocomplete="organization" required><span class="err">נא למלא את שם המשרד</span></label>
+          <label class="cell"><span class="lb">תפקיד <i>*</i></span><input name="role" autocomplete="organization-title" required><span class="err">נא למלא תפקיד</span></label>
+          <label class="cell"><span class="lb">נייד <i>*</i></span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required pattern="[\d\s\-\+]{9,}"><span class="err">נא למלא מספר נייד, לדוגמה 050-0000000</span></label>
+          <label class="cell"><span class="lb">אימייל <i>*</i></span><input name="email" type="email" autocomplete="email" required><span class="err">נא למלא כתובת אימייל תקינה</span></label>
+          <label class="cell c-arch"><span class="lb">כמה אדריכלים במשרד</span>
+            <select name="size">
+              <option value="">בחרו</option>
+              <option dir="ltr">1–3</option>
+              <option dir="ltr">4–10</option>
+              <option dir="ltr">11–30</option>
+              <option dir="ltr">30+</option>
+            </select>
+          </label>
+          <fieldset class="cell wide">
+            <legend>סוגי פרויקטים עיקריים</legend>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="types" value="מגורים"><span>מגורים</span></label>
+              <label class="chip"><input type="checkbox" name="types" value="התחדשות עירונית"><span>התחדשות עירונית</span></label>
+              <label class="chip"><input type="checkbox" name="types" value="מסחר ומשרדים"><span>מסחר ומשרדים</span></label>
+              <label class="chip"><input type="checkbox" name="types" value="מלונאות"><span>מלונאות</span></label>
+              <label class="chip"><input type="checkbox" name="types" value="פנים"><span>פנים</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="tb-foot">
+          <p>נחזור אליכם לתיאום הצגה אישית.</p>
+          <button class="btn" type="submit">שליחה</button>
+        </div>
+      </form>
+      <div class="done" role="status" aria-live="polite" tabindex="-1" id="done">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="24" cy="24" r="21"/><path d="M15 24.5l6 6L33.5 18"/></svg>
+        <h3>הפרטים התקבלו</h3>
+        <p>נחזור אליכם לתיאום הצגה אישית.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="ftr">
+  <div class="wrap">
+    <span class="logo" aria-label="Magic AI"><b>M</b>Magic AI</span>
+    <p>דיזנגוף 50, תל אביב</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // signature card: resolve the spec line into offers when it enters the viewport
+  var spec=document.getElementById('spec');
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce||!('IntersectionObserver' in window)){spec.classList.add('in');}
+  else{
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){spec.classList.add('in');io.disconnect();}})},{threshold:.15,rootMargin:'0px 0px -10% 0px'});
+    io.observe(spec);
+  }
+
+  // how it works: each step shows its own platform screen
+  var btns=[].slice.call(document.querySelectorAll('#steps button'));
+  var imgs=[].slice.call(document.querySelectorAll('#shot img'));
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      var i=+b.getAttribute('data-shot');
+      btns.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+      imgs.forEach(function(im,k){im.classList.toggle('on',k===i)});
+    });
+  });
+
+  // form: validate on submit, then success state (no endpoint in the preview)
+  var form=document.getElementById('lead');
+  function check(el){
+    var cell=el.closest('.cell'); if(!cell) return true;
+    var ok=el.checkValidity(); cell.classList.toggle('bad',!ok); return ok;
+  }
+  [].forEach.call(form.querySelectorAll('input[required]'),function(el){
+    el.addEventListener('blur',function(){ if(el.value) check(el); });
+    el.addEventListener('input',function(){ if(el.closest('.cell').classList.contains('bad')) check(el); });
+  });
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var first=null;
+    [].forEach.call(form.querySelectorAll('input[required]'),function(el){ if(!check(el)&&!first) first=el; });
+    if(first){ first.focus(); return; }
+    document.getElementById('tb').classList.add('sent');
+    document.getElementById('done').focus();
+  });
+})();
+</script>
+</body>
+</html>

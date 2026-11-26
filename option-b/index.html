@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Magic AI · תוכנית השותפים למשרדי אדריכלות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  Option B · "Scroll experience: from spec to factory"
+  Signature move: the architect's own spec sheet comes apart on scroll. Its rows lift off, pool with
+  other companies' demand, go out to tender on a globe, come back as three factory offers, the client
+  approves one, and the share lands back on the sheet's title block, where the architect signs.
+  Numbers inside the animated cards are the platform's own TEST data (screen s3, marked EXAMPLE),
+  labelled "דוגמה" on the page. Not a claim.
+-->
+<style>
+:root{
+  --ink:#0e1424;--ink2:#3a4256;--mute:#5f677a;--line:#e4e7ee;--bg:#f7f8fa;--card:#fff;
+  --accent:#3355d6;--accent-soft:#eef2ff;--ok:#16a34a;
+  --navy:#1f2a44;--navy2:#26304a;--sky:#8fa6ff;--haze:#c7d0f5;
+  --r:16px;
+  --shadow:0 1px 2px rgba(14,20,36,.04),0 8px 24px rgba(14,20,36,.06);
+  --lift:0 2px 4px rgba(14,20,36,.06),0 18px 40px rgba(14,20,36,.14);
+  --ease:cubic-bezier(.23,1,.32,1);
+  --gut:clamp(16px,5vw,72px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Heebo,Manrope,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{max-width:100%;display:block}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.015em;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
+.num,.lat{font-family:Manrope,Heebo,sans-serif}
+a{color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- logo + buttons ---------- */
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:18px;font-family:Manrope,Heebo,sans-serif;color:var(--ink);direction:ltr}
+.logo b{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--ink);color:#fff;font-size:15px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:17px;font-family:inherit;padding:15px 24px;min-height:52px;border-radius:12px;background:var(--accent);color:#fff;border:0;cursor:pointer;white-space:nowrap;transition:background-color .15s var(--ease),transform .12s var(--ease),box-shadow .15s var(--ease);box-shadow:0 1px 2px rgba(14,20,36,.1),0 8px 20px rgba(51,85,214,.22)}
+.btn:hover{background:#2846bd}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,.chipbox input:focus-visible+span{outline:3px solid var(--sky);outline-offset:3px}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.sm{font-size:14px;padding:9px 14px;min-height:40px;box-shadow:none}
+
+/* ---------- top bar ---------- */
+.top{position:fixed;inset:0 0 auto 0;z-index:60;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gut);background:rgba(247,248,250,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .2s}
+.top.sc{border-bottom-color:var(--line)}
+@media (max-width:399px){.top .btn{display:none}}
+
+/* ---------- shared drawing pieces: sheet, chip, card ---------- */
+.sheet{position:absolute;width:400px;height:520px;background:#fff;border-radius:6px;box-shadow:var(--lift);overflow:hidden;
+  background-image:linear-gradient(rgba(51,85,214,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(51,85,214,.06) 1px,transparent 1px);background-size:16px 16px}
+.sheet::after{content:"";position:absolute;inset:8px;border:1px solid rgba(14,20,36,.22);border-radius:2px;pointer-events:none}
+.sh-head{position:absolute;top:22px;right:24px;left:24px;display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid var(--ink);padding-bottom:8px}
+.sh-head b{font-size:17px}
+.sh-head span{font-size:12px;color:var(--mute)}
+.sh-plan{position:absolute;top:66px;right:24px;width:352px;height:150px}
+.sh-plan path,.sh-plan line,.sh-plan rect{vector-effect:non-scaling-stroke}
+.row{position:absolute;right:16px;left:16px;height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border-radius:8px;font-size:14px;border:1px solid transparent;transition:background-color .3s,border-color .3s}
+.row b{font-weight:700}
+.row i{font-style:normal;color:var(--mute);font-size:12px;font-family:Manrope,Heebo,sans-serif;direction:ltr}
+.row.r1{top:236px}.row.r2{top:282px}.row.r3{top:328px}.row.r4{top:374px}
+.row.r2::before,.row.r3::before,.row.r4::before{content:"";position:absolute;top:-4px;right:10px;left:10px;border-top:1px dashed var(--line)}
+.row.hi{background:var(--accent-soft);border-color:#d5ddfb}
+.row.ghost{border:1px dashed var(--haze);background:transparent}
+.row.ghost b{color:#a6aec0}
+.tb{position:absolute;bottom:20px;right:16px;left:16px;height:70px;border:1.5px solid var(--ink);display:grid;grid-template-columns:1.4fr 1fr;font-size:12px;transition:box-shadow .4s var(--ease),border-color .4s}
+.tb>div{padding:8px 10px;display:flex;flex-direction:column;justify-content:center}
+.tb>div+div{border-right:1.5px solid var(--ink)}
+.tb small{color:var(--mute);font-size:11px}
+.tb strong{font-size:14px}
+.tb.paid{border-color:var(--accent);box-shadow:0 0 0 4px rgba(51,85,214,.12)}
+
+.chip{position:absolute;width:200px;height:40px;background:#fff;border:1px solid #d5ddfb;border-radius:10px;display:flex;align-items:center;gap:8px;padding:0 12px;font-size:14px;font-weight:700;box-shadow:var(--lift);white-space:nowrap}
+.chip::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--accent);flex:none}
+
+.card{position:absolute;width:330px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--lift);transition:border-color .3s,box-shadow .3s}
+.card .ct{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:8px}
+.card .ct b{font-size:15px}
+.card .ct span{font-size:12px;color:var(--mute)}
+.card dl{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0}
+.card dt{font-size:11px;color:var(--mute);line-height:1.3}
+.card dd{margin:2px 0 0;font-family:Manrope,Heebo,sans-serif;font-weight:800;font-size:16px;direction:ltr;text-align:right}
+.card .ok{display:none;font-size:12px;font-weight:700;color:var(--ok);background:#e9f8ef;border-radius:99px;padding:2px 10px}
+.card.sel{border-color:var(--ok);box-shadow:0 0 0 3px rgba(22,163,74,.14),var(--lift)}
+.card.sel .ok{display:inline-block}
+.card.sel .ct span.c{display:none}
+
+.bank{position:absolute;width:330px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;background:#fff;border:1px dashed #c9cfdc;border-radius:14px;font-size:13px;font-weight:700}
+.bank .n{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.bank .n svg{width:18px;height:18px;color:var(--ink2)}
+.bank .ar{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--ink2) 0 6px,transparent 6px 10px);position:relative;margin:0 4px}
+.bank .ar::after{content:"";position:absolute;left:-2px;top:-4px;border:5px solid transparent;border-right:7px solid var(--ink2);border-left:0}
+
+.share{position:absolute;height:36px;display:flex;align-items:center;gap:6px;padding:0 14px;background:var(--accent);color:#fff;border-radius:99px;font-size:13px;font-weight:700;white-space:nowrap;box-shadow:0 8px 20px rgba(51,85,214,.3)}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:100svh;display:grid;grid-template-columns:minmax(0,1.22fr) minmax(0,.78fr);align-items:center;gap:3vw;padding:112px var(--gut) 64px;overflow:clip}
+.bp{position:absolute;inset:-10% -5%;background-image:linear-gradient(rgba(51,85,214,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(51,85,214,.07) 1px,transparent 1px),linear-gradient(rgba(51,85,214,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(51,85,214,.035) 1px,transparent 1px);background-size:96px 96px,96px 96px,24px 24px,24px 24px;-webkit-mask-image:radial-gradient(ellipse 70% 70% at 30% 50%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse 70% 70% at 30% 50%,#000 30%,transparent 75%);will-change:transform}
+.hero-copy{position:relative;z-index:3;max-width:780px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--accent);background:var(--accent-soft);border:1px solid #dbe2fb;padding:6px 12px;border-radius:99px;margin-bottom:22px}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.hero h1{font-size:clamp(34px,3.45vw,52px);line-height:1.08;margin-bottom:22px}
+.hero h1 .pk{display:block;color:var(--accent)}
+.hero .sub{font-size:clamp(17px,1.35vw,19px);color:var(--ink2);max-width:56ch;margin-bottom:30px}
+.cta-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.due{font-size:14px;color:var(--mute);display:flex;align-items:center;gap:6px}
+.due svg{width:16px;height:16px;color:var(--accent)}
+.due b{color:var(--ink);font-weight:700}
+
+.scene{position:relative;height:min(640px,76vh);direction:ltr}
+.scene .dim{position:absolute;inset:0;pointer-events:none;will-change:transform;z-index:4}
+.scene .sheet-wrap{position:absolute;left:50%;top:50%;width:400px;height:520px;margin:-260px 0 0 -200px;will-change:transform;z-index:2}
+.scene .sheet-wrap .sheet{position:relative;transform:rotate(-4deg)}
+.scene .chip{z-index:5;will-change:transform}
+.scene .c1{left:calc(50% + 90px);top:calc(50% - 40px)}
+.scene .c2{left:calc(50% + 120px);top:calc(50% + 14px)}
+.scene .c3{left:calc(50% + 70px);top:calc(50% + 68px)}
+.scene .c1,.scene .c2,.scene .c3{direction:rtl}
+.scene .tag{position:absolute;z-index:5;direction:rtl;background:var(--ink);color:#fff;border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700;box-shadow:var(--lift);left:calc(50% - 250px);top:calc(50% - 190px);will-change:transform;display:flex;gap:8px;align-items:center}
+.scene .tag i{font-style:normal;color:var(--sky);font-weight:500}
+
+/* ---------- section base ---------- */
+.sec{padding:clamp(72px,9vw,128px) var(--gut)}
+.sec-h{font-size:clamp(30px,3.4vw,46px);line-height:1.12;margin-bottom:14px}
+.lead{font-size:18px;color:var(--ink2);max-width:58ch}
+
+/* reveal */
+.in{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.in.on{opacity:1;transform:none}
+
+/* ---------- WHAT PARTNERS GET ---------- */
+.gets{background:#fff;border-block:1px solid var(--line)}
+.gets .wrap{max-width:1180px;margin:0 auto}
+.legend{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--ink);border-radius:4px;background:#fff}
+.legend li{list-style:none;padding:28px 28px 30px;display:grid;grid-template-columns:48px 1fr;gap:4px 18px;align-items:start}
+.legend li:nth-child(odd){border-left:1px solid var(--line)}
+.legend li:nth-child(-n+2){border-bottom:1px solid var(--line)}
+.legend ol{margin:0;padding:0;display:contents}
+.ic{grid-row:span 2;width:48px;height:48px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.ic svg{width:24px;height:24px}
+.legend h3{font-size:20px;line-height:1.3}
+.legend p{color:var(--ink2);font-size:16px}
+.strip{margin-top:18px;display:flex;flex-wrap:wrap;gap:6px 24px;align-items:center;justify-content:space-between;background:var(--ink);color:#fff;border-radius:var(--r);padding:20px 26px;font-size:18px;font-weight:700}
+.strip span{display:flex;align-items:center;gap:10px}
+.strip svg{width:20px;height:20px;color:var(--sky);flex:none}
+
+/* ---------- JOURNEY ---------- */
+.journey{position:relative;background:var(--bg)}
+.j-stage{display:none}
+.stage-mode .j-stage{display:block;height:560vh;position:relative}
+.stage-mode .j-route{display:none}
+.stage{position:sticky;top:0;height:100vh;height:100svh;display:grid;grid-template-columns:minmax(300px,30%) minmax(0,1fr);gap:2.5vw;align-items:center;padding:84px var(--gut) 28px;overflow:clip}
+.stage .bpg{position:absolute;inset:0;background-image:linear-gradient(rgba(51,85,214,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(51,85,214,.05) 1px,transparent 1px);background-size:32px 32px;-webkit-mask-image:linear-gradient(90deg,#000 0,#000 60%,transparent);mask-image:linear-gradient(90deg,#000 0,#000 60%,transparent);pointer-events:none}
+.caps-col{position:relative;z-index:2}
+.caps-col .sec-h{margin-bottom:26px}
+.rail{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:0 0 30px;padding:0;list-style:none}
+.rail li{font-size:12px;color:var(--mute);font-weight:500;white-space:nowrap}
+.rail li::before{content:"";display:block;height:3px;border-radius:2px;margin-bottom:8px;background:linear-gradient(to left,var(--accent) var(--f,0%),var(--line) var(--f,0%))}
+.rail li.on{color:var(--ink);font-weight:700}
+.caps{position:relative;min-height:230px}
+.cap{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(14px);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.cap.on{opacity:1;transform:none}
+.cap p{font-size:clamp(21px,1.75vw,26px);line-height:1.45;font-weight:500}
+.cap p .dim{color:#a3abbd;transition:color .4s}
+.cap p .dim.lit{color:var(--ink)}
+.cap .note{margin-top:16px;display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink2);font-weight:500}
+.cap .note svg{width:18px;height:18px;color:var(--ok);flex:none}
+.cap .tag{display:inline-block;font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px}
+.canvas-box{position:relative;height:100%;min-height:0;direction:ltr}
+.canvas{position:absolute;left:0;top:0;width:820px;height:620px;transform-origin:0 0}
+.canvas>*{left:0;top:0;transform-origin:50% 50%;will-change:transform,opacity}
+.canvas .sheet,.canvas .chip,.canvas .card,.canvas .bank,.canvas .share,.canvas .pool{direction:rtl}
+.canvas .globe{position:absolute;width:820px;height:620px;opacity:0}
+.pool{position:absolute;width:440px;height:296px;border:1.5px solid var(--ink);border-radius:16px;background:rgba(255,255,255,.92);padding:48px 16px 16px;opacity:0}
+.pool .ph{position:absolute;top:12px;right:16px;left:16px;display:flex;justify-content:space-between;align-items:baseline}
+.pool .ph b{font-size:15px}
+.pool .ph span{font-size:12px;color:var(--mute)}
+.cells{display:grid;grid-template-columns:200px 200px;grid-auto-rows:40px;gap:8px}
+.cell{border-radius:10px;background:repeating-linear-gradient(135deg,#eef0f5 0 6px,#e5e8ef 6px 12px);opacity:0;transform:translate(var(--fx,0),var(--fy,0)) scale(.95);transition:opacity .45s var(--ease),transform .55s var(--ease)}
+.cell.me{background:none}
+.pool.filled .cell{opacity:1;transform:none}
+.pool.filled .cell:nth-child(2){transition-delay:.04s}.pool.filled .cell:nth-child(3){transition-delay:.08s}.pool.filled .cell:nth-child(5){transition-delay:.12s}.pool.filled .cell:nth-child(6){transition-delay:.16s}.pool.filled .cell:nth-child(7){transition-delay:.2s}.pool.filled .cell:nth-child(9){transition-delay:.24s}.pool.filled .cell:nth-child(10){transition-delay:.28s}
+.globe .grat{fill:none;stroke:#c9d2ee;stroke-width:1}
+.globe .rim{fill:rgba(255,255,255,.55);stroke:#9fb0e6;stroke-width:1.5}
+.globe .arc{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round}
+.globe .fd{fill:var(--ink2)}
+.globe .fd.win{fill:var(--accent)}
+.globe .pulse{fill:none;stroke:var(--accent);stroke-width:1.5;opacity:0;transform-box:fill-box;transform-origin:center}
+.globe.tender .pulse{animation:pulse 1.6s var(--ease) infinite}
+@keyframes pulse{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(3.2)}}
+.globe .ash{fill:var(--ink)}
+.globe text{font-family:Heebo,sans-serif;font-size:13px;font-weight:700;fill:var(--ink)}
+.globe text.l{font-family:Manrope,sans-serif;font-size:12px;fill:var(--accent)}
+
+/* ---------- ROUTE (phone + reduced motion) ---------- */
+.j-route{padding:clamp(72px,9vw,120px) var(--gut) clamp(56px,7vw,96px)}
+.j-route .wrap{max-width:1100px;margin:0 auto}
+.route{position:relative;list-style:none;margin:34px 0 0;padding:0 30px 0 0}
+.route::before{content:"";position:absolute;right:9px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.route .fill{position:absolute;right:9px;top:8px;bottom:8px;width:2px;background:var(--accent);transform-origin:top;transform:scaleY(var(--rp,0))}
+.stop{position:relative;padding-bottom:40px}
+.stop:last-child{padding-bottom:0}
+.stop::before{content:"";position:absolute;right:-27px;top:6px;width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid var(--haze);transition:border-color .3s,background-color .3s}
+.stop.on::before{border-color:var(--accent);background:var(--accent)}
+.stop .lb{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.stop p{font-size:18px;line-height:1.5;font-weight:500;margin-bottom:16px}
+.stop .note{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--ink2);margin:-4px 0 16px}
+.stop .note svg{width:18px;height:18px;color:var(--ok);flex:none}
+.mini{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow);overflow:hidden}
+.mini .card,.mini .bank,.mini .share,.mini .chip{position:relative;width:auto;box-shadow:none}
+.mini .chip{height:36px;font-size:13px;box-shadow:none}
+.m-sheet{background-image:linear-gradient(rgba(51,85,214,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(51,85,214,.06) 1px,transparent 1px);background-size:14px 14px}
+.m-sheet .mh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid var(--ink);padding-bottom:6px;margin-bottom:8px}
+.m-sheet .mh span{font-size:12px;color:var(--mute)}
+.m-rows{display:grid;gap:6px}
+.m-rows div{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:8px;font-size:14px;background:#fff;border:1px solid var(--line);transition:transform .5s var(--ease),box-shadow .5s,border-color .5s}
+.m-rows div i{font-style:normal;color:var(--mute);font-size:12px;font-family:Manrope,sans-serif;direction:ltr}
+.m-rows div.me{border-color:#d5ddfb;background:var(--accent-soft)}
+.on .m-rows div.me{transform:translate(-6px,-3px);box-shadow:var(--lift)}
+.on .m-rows div.me:nth-child(2){transition-delay:.08s}.on .m-rows div.me:nth-child(3){transition-delay:.16s}
+.m-pool .cells{grid-template-columns:1fr 1fr;grid-auto-rows:34px;gap:6px}
+.m-pool .cell{opacity:1;transform:none}
+.m-pool .cell.me{background:#fff;border:1px solid #d5ddfb;border-radius:9px;display:flex;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden}
+.m-pool .cell.me::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--accent);flex:none}
+.m-pool .ph{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.m-pool .ph span{font-size:12px;color:var(--mute)}
+.m-pool .cell:not(.me){opacity:0;transform:scale(.95);transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.on .m-pool .cell:not(.me){opacity:1;transform:none}
+.m-globe{margin-top:12px;border-top:1px dashed var(--line);padding-top:6px}
+.m-globe svg{width:100%;height:auto;display:block}
+.m-globe .arc{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.2s var(--ease)}
+.on .m-globe .arc{stroke-dashoffset:0}
+.on .m-globe .arc:nth-of-type(2){transition-delay:.12s}
+.m-cards{display:grid;gap:8px}
+.m-cards .card{padding:10px 12px}
+.m-cards .card dd{font-size:15px}
+.m-approve{display:grid;gap:10px}
+.m-approve .bank{height:56px}
+.m-share{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.m-share .tb{position:relative;inset:auto;width:100%;height:64px;bottom:auto}
+.m-share .share{height:34px;transform:translateY(8px);opacity:0;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.on .m-share .share{opacity:1;transform:none}
+.ex{display:inline-block;font-size:11px;font-weight:700;color:#8a5a00;background:#fff6dd;border:1px solid #f2dc9b;border-radius:6px;padding:1px 7px;margin-inline-start:6px;vertical-align:middle;font-family:Heebo,sans-serif;letter-spacing:0}
+
+/* ---------- SCREENS ---------- */
+.screens{padding:clamp(64px,7vw,104px) var(--gut);background:#fff;border-top:1px solid var(--line)}
+.screens .wrap{max-width:1240px;margin:0 auto}
+.screens .hd{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.screens h2{font-size:clamp(24px,2.4vw,32px)}
+.screens .hd p{color:var(--mute);font-size:15px}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:0;padding:0;list-style:none}
+.shots figure{margin:0}
+.shots .fr{border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#eef0f5;aspect-ratio:1600/786}
+.shots img{width:100%;height:100%;object-fit:cover;object-position:right top}
+.shots figcaption{margin-top:10px;font-size:15px;font-weight:700;display:flex;gap:8px;align-items:baseline}
+.shots figcaption span{font-family:Manrope,sans-serif;color:var(--accent);font-size:13px}
+
+/* ---------- OFFER (peak) ---------- */
+.offer{position:relative;background:var(--ink);color:#fff;padding:clamp(80px,10vw,140px) var(--gut);overflow:clip}
+.offer::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(143,166,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(143,166,255,.07) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse 60% 80% at 80% 20%,#000,transparent 70%);mask-image:radial-gradient(ellipse 60% 80% at 80% 20%,#000,transparent 70%)}
+.offer .wrap{position:relative;max-width:1180px;margin:0 auto}
+.offer-top{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-bottom:56px}
+.offer h2{font-size:clamp(38px,5.2vw,72px);line-height:1.04;letter-spacing:-.02em}
+.offer h2 .acc{display:block;color:var(--sky)}
+.cal{display:flex;align-items:center;gap:16px;background:var(--accent);border-radius:18px;padding:16px 22px 16px 26px;box-shadow:0 20px 40px rgba(0,0,0,.25)}
+.cal .d{font-family:Manrope,sans-serif;font-weight:800;font-size:64px;line-height:1;letter-spacing:-.03em}
+.cal .t{display:flex;flex-direction:column;line-height:1.25}
+.cal .t small{font-size:14px;color:#dfe5ff;font-weight:500}
+.cal .t b{font-size:20px}
+.steps{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin:0 0 52px;padding:0;list-style:none}
+.steps .ln{position:absolute;top:27px;right:28px;left:28px;height:2px;background:rgba(143,166,255,.25);overflow:hidden}
+.steps .ln i{position:absolute;inset:0;background:var(--sky);transform-origin:right;transform:scaleX(0);transition:transform 1.4s var(--ease) .1s}
+.steps.on .ln i{transform:scaleX(1)}
+.steps li{position:relative}
+.steps .n{position:relative;z-index:1;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--navy);border:2px solid rgba(143,166,255,.35);font-family:Manrope,sans-serif;font-weight:800;font-size:22px;margin-bottom:20px;transition:background-color .4s,border-color .4s}
+.steps.on li .n{background:var(--accent);border-color:var(--accent)}
+.steps.on li:nth-child(3) .n{transition-delay:.35s}.steps.on li:nth-child(4) .n{transition-delay:.7s}
+.steps p{font-size:clamp(18px,1.5vw,21px);line-height:1.5;color:#e8ecf8;max-width:30ch}
+.offer .cta-wrap .due{color:#b9c2db}
+.offer .cta-wrap .due b{color:#fff}
+.offer .btn{box-shadow:0 10px 30px rgba(51,85,214,.45)}
+
+/* ---------- FAQ ---------- */
+.faq .wrap{max-width:1180px;margin:0 auto}
+.qa{margin:34px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.qa div{padding:22px 0;border-top:1px solid var(--line)}
+.qa dt{font-weight:800;font-size:19px;margin-bottom:6px}
+.qa dd{margin:0;color:var(--ink2);font-size:16.5px}
+
+/* ---------- FORM ---------- */
+.join{background:#fff;border-top:1px solid var(--line)}
+.join .wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:56px;align-items:start}
+.join .side .due{margin-top:18px}
+.join .side .tbx{margin-top:28px;border:1.5px solid var(--ink);display:grid;grid-template-columns:1fr 1fr;font-size:13px;max-width:360px}
+.join .side .tbx div{padding:10px 12px}
+.join .side .tbx div+div{border-right:1.5px solid var(--ink)}
+.join .side .tbx small{display:block;color:var(--mute);font-size:12px}
+form{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,3vw,34px)}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.f{display:flex;flex-direction:column;gap:6px}
+.f.w{grid-column:1/-1}
+.f label,.f legend{font-size:14px;font-weight:700;color:var(--ink2)}
+input,select{font:inherit;font-size:16px;height:50px;border:1px solid #cfd5e1;border-radius:12px;background:#fff;padding:0 14px;color:var(--ink);width:100%;transition:border-color .15s}
+input:hover,select:hover{border-color:#aab3c6}
+input[type=tel],input[type=email]{direction:ltr;text-align:right}
+select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%233a4256' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 14px center;padding-left:34px}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chipbox{position:relative}
+.chipbox input{position:absolute;opacity:0;width:1px;height:1px}
+.chipbox span{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:99px;border:1px solid #cfd5e1;background:#fff;font-size:15px;font-weight:500;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s;user-select:none}
+.chipbox input:checked+span{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700}
+.submit{margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.submit .btn{min-width:180px}
+.submit small{color:var(--mute);font-size:14px}
+.err{color:#b42318;font-size:13px;min-height:0}
+input[aria-invalid=true]{border-color:#d92d20}
+.done{display:none;text-align:center;padding:44px 20px;background:var(--bg);border:1px solid var(--line);border-radius:20px}
+.done .ck{width:64px;height:64px;border-radius:50%;background:#e9f8ef;color:var(--ok);display:grid;place-items:center;margin:0 auto 16px}
+.done .ck svg{width:30px;height:30px}
+.done h3{font-size:26px;margin-bottom:6px}
+.done p{color:var(--ink2)}
+.sent form{display:none}.sent .done{display:block}
+
+footer{padding:28px var(--gut);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);font-size:14px;color:var(--mute);background:var(--bg)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .hero{grid-template-columns:1fr;padding-top:100px;gap:8px}
+  .scene{height:430px}
+  .scene .sheet-wrap{transform-origin:50% 50%}
+}
+@media (max-width:899px){
+  body{font-size:16px}
+  .legend{grid-template-columns:1fr}
+  .legend li:nth-child(odd){border-left:0}
+  .legend li:not(:last-child){border-bottom:1px solid var(--line)}
+  .legend li{padding:22px 18px;grid-template-columns:44px 1fr;gap:4px 14px}
+  .ic{width:44px;height:44px}
+  .strip{font-size:16px;padding:18px 20px}
+  .shots{grid-template-columns:1fr;gap:22px}
+  .shots .fr{aspect-ratio:4/3}
+  .shots img{object-position:55% 30%}
+  .offer-top{grid-template-columns:1fr;gap:28px;margin-bottom:40px}
+  .steps{grid-template-columns:1fr;gap:0}
+  .steps .ln{top:28px;bottom:28px;right:27px;left:auto;width:2px;height:auto}
+  .steps .ln i{transform-origin:top;transform:scaleY(0)}
+  .steps.on .ln i{transform:scaleY(1)}
+  .steps li{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:center;padding-bottom:22px}
+  .steps .n{margin:0}
+  .qa{grid-template-columns:1fr}
+  .join .wrap{grid-template-columns:1fr;gap:28px}
+  .join .side .tbx{display:none}
+}
+@media (max-width:560px){
+  .hero{padding:92px 16px 36px;min-height:auto}
+  .hero h1{font-size:clamp(31px,8.6vw,38px)}
+  .eyebrow{font-size:13px;padding:5px 10px}
+  .hero .sub{margin-bottom:24px}
+  .cta-wrap,.cta-wrap .btn{width:100%}
+  .cta-wrap{align-items:stretch}
+  .due{justify-content:center}
+  .scene{height:300px;margin-top:22px}
+  .scene .sheet-wrap{transform:scale(.6)}
+  .scene .c1{left:calc(50% + 4px);top:calc(50% - 36px)}
+  .scene .c2{left:calc(50% + 22px);top:calc(50% + 10px)}
+  .scene .c3{left:calc(50% - 6px);top:calc(50% + 56px)}
+  .scene .chip{transform:scale(.82)}
+  .scene .tag{left:calc(50% - 160px);top:calc(50% - 128px);font-size:12px}
+  .sec{padding:64px 16px}
+  .j-route,.screens,.offer{padding-left:16px;padding-right:16px}
+  .fg{grid-template-columns:1fr}
+  .cal .d{font-size:52px}
+  .cal{justify-self:start}
+  .offer .cta-wrap .btn{width:100%}
+  footer{padding:24px 16px}
+  .submit .btn{width:100%}
+}
+@media (min-width:900px){
+  .rm .route{display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;padding:0}
+  .rm .route::before,.rm .route .fill{display:none}
+  .rm .stop{padding:0}
+  .rm .stop::before{display:none}
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
+  .in{opacity:1;transform:none}
+}
+.rm .in{opacity:1;transform:none}
+.rm .m-globe .arc{stroke-dashoffset:0}
+.rm .m-pool .cell:not(.me),.rm .m-share .share{opacity:1;transform:none}
+.rm .steps .ln i{transform:none}
+.rm .steps li .n{background:var(--accent);border-color:var(--accent)}
+.rm .stop::before{border-color:var(--accent);background:var(--accent)}
+.rm .route .fill{transform:none}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <span class="logo"><b>M</b>Magic AI</span>
+  <a class="btn sm" href="#join">אני רוצה לשמוע על השותפות</a>
+</header>
+
+<main>
+
+<!-- ================= HERO ================= -->
+<section class="hero" aria-labelledby="h1">
+  <div class="bp" data-depth="bp" aria-hidden="true"></div>
+  <div class="hero-copy">
+    <span class="eyebrow">תוכנית השותפים של Magic AI למשרדי אדריכלות</span>
+    <h1 id="h1">מתכננים במחירי מפעל. <span class="pk">מרוויחים מכל לקוח שמגיע איתכם.</span></h1>
+    <p class="sub">Magic AI מאחדת הזמנות של חברות בנייה רבות להזמנה אחת גדולה מול מפעלים בכל העולם. משרדי אדריכלות שמצטרפים כשותפים רואים מחיר מפעל וזמן אספקה כבר בשלב התכנון, ומקבלים חלק מההכנסה על כל לקוח שהם מביאים.</p>
+    <div class="cta-wrap">
+      <a class="btn" href="#join">אני רוצה לשמוע על השותפות
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+      <span class="due"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>הגשת מועמדות עד <b>9 בדצמבר 2026</b></span>
+    </div>
+  </div>
+
+  <div class="scene" aria-hidden="true">
+    <div class="sheet-wrap" data-depth="sheet">
+      <div class="sheet">
+        <div class="sh-head"><b>מפרט טכני</b><span>פרויקט מגורים · דוגמה</span></div>
+        <svg class="sh-plan" viewBox="0 0 352 150" fill="none" stroke="#0e1424"><use href="#plan"/></svg>
+        <div class="row r1 hi"><b>אריח פורצלן</b><i>60×60 · R10</i></div>
+        <div class="row r2 hi"><b>ברז מטבח נשלף</b><i>brass · chrome</i></div>
+        <div class="row r3 hi"><b>דלת פנים</b><i>80×210 · MDF</i></div>
+        <div class="row r4"><b>גוף תאורה שקוע</b><i>LED 12W · 4000K</i></div>
+        <div class="tb"><div><small>משרד אדריכלות</small><strong>המשרד שלכם</strong></div><div><small>שלב</small><strong>תכנון</strong></div></div>
+      </div>
+    </div>
+    <div class="chip c1" data-depth="c1">אריח פורצלן 60×60</div>
+    <div class="chip c2" data-depth="c2">ברז מטבח נשלף</div>
+    <div class="chip c3" data-depth="c3">דלת פנים 80×210</div>
+    <div class="tag" data-depth="tag">מחיר מפעל <i>·</i> זמן אספקה</div>
+    <svg class="dim" data-depth="dim" viewBox="0 0 600 640" preserveAspectRatio="none" fill="none" stroke="#3355d6" stroke-width="1" opacity=".5">
+      <path d="M30 600 H570 M30 592 v16 M570 592 v16" /><path d="M580 40 V600 M572 40 h16 M572 600 h16" stroke-dasharray="3 5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- shared floor-plan drawing -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="plan" stroke-width="1.2">
+      <rect x="6" y="10" width="340" height="128" stroke-width="3"/>
+      <path d="M140 10 V82 M140 106 V138 M240 10 V60 M240 84 V138 M240 98 H346" stroke-width="2"/>
+      <path d="M140 82 A24 24 0 0 1 164 106" stroke-dasharray="2 3"/><path d="M140 82 H164" />
+      <path d="M240 60 A24 24 0 0 0 216 84" stroke-dasharray="2 3"/>
+      <path d="M40 10 h60 M40 7 v6 M100 7 v6" stroke="#3355d6" stroke-width="3"/>
+      <path d="M270 138 h50" stroke="#3355d6" stroke-width="3"/>
+      <rect x="18" y="98" width="70" height="28" rx="2" stroke="#8b93a7"/><path d="M18 112 h70" stroke="#8b93a7"/>
+      <rect x="258" y="22" width="26" height="40" rx="3" stroke="#8b93a7"/><circle cx="315" cy="38" r="12" stroke="#8b93a7"/>
+      <rect x="160" y="22" width="62" height="10" stroke="#8b93a7"/>
+      <path d="M6 146 H140 M6 142 v8 M140 142 v8" stroke="#3355d6" stroke-width=".8"/>
+    </g>
+  </defs>
+</svg>
+
+<!-- ================= WHAT PARTNERS GET ================= -->
+<section class="sec gets" aria-labelledby="gets-h">
+  <div class="wrap">
+    <h2 class="sec-h in" id="gets-h">מה מקבלים שותפים</h2>
+    <ul class="legend in" style="padding:0;margin-top:36px">
+      <li>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.8c1.6.8 2.6 2.5 3 5.2"/></svg></span>
+        <h3>לקוחות ופרויקטים חדשים</h3>
+        <p>יזמים, קבלנים, משקיעים ולקוחות פרטיים, דרך מרקטפלייס השירותים של הפלטפורמה.</p>
+      </li>
+      <li>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg></span>
+        <h3>הכנסה חוזרת</h3>
+        <p>חלק מוסכם מההכנסה של Magic AI על כל לקוח שהבאתם, גם על ההזמנות הבאות שלו לאורך תקופה מוסכמת.</p>
+      </li>
+      <li>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10l5 3V10l5 3V6l4 2v13"/><path d="M8 17h1M12 17h1M16 17h1"/></svg></span>
+        <h3>מחיר מפעל וזמן אספקה כבר בתכנון</h3>
+        <p>חומרים, ריהוט, כלים סניטריים, דלתות, חלונות וציוד ממפעלים בארץ ובעולם, ישר לתוך המפרט.</p>
+      </li>
+      <li>
+        <!-- ⚠️ negotiations only, never "signed". Brand names (Margraf / Olivari) left out until the client OKs them. -->
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18M9 3l3 18 3-18"/></svg></span>
+        <h3>קולקציות בלעדיות</h3>
+        <p>Magic AI מנהלת משא ומתן על זכויות בלעדיות למותגים ולקולקציות. אחרי החתימה, הן יהיו זמינות לשותפים.</p>
+      </li>
+    </ul>
+    <div class="strip in">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>בלי תשלום חודשי קבוע.</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>המותג שלכם והלקוחות שלכם נשארים שלכם.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= JOURNEY: from spec to factory ================= -->
+<section class="journey" id="how" aria-labelledby="how-h">
+
+  <!-- desktop: one sticky stage, layered planes, driven by scroll -->
+  <div class="j-stage" id="jstage">
+    <div class="stage">
+      <div class="bpg" aria-hidden="true"></div>
+      <div class="caps-col">
+        <h2 class="sec-h" id="how-h">מהמפרט שלכם להזמנה ממפעל</h2>
+        <ol class="rail" id="rail" aria-hidden="true">
+          <li>מפרט</li><li>איחוד</li><li>מכרז</li><li>הצעות</li><li>אישור</li><li>החלק שלכם</li>
+        </ol>
+        <div class="caps">
+          <div class="cap" data-cap="0"><p>אתם מכניסים למפרט פריטים מהקטלוג של המפעלים.</p></div>
+          <div class="cap" data-cap="1"><p><span class="dim" data-half="a">Magic AI מאחדת את הביקוש עם הזמנות של חברות אחרות</span> <span class="dim" data-half="b">ומוציאה מכרז בין מפעלים בעולם.</span></p></div>
+          <div class="cap" data-cap="2"><p>הלקוח רואה את שלושת המפעלים הטובים לפי עלות מלאה עד נמל אשדוד, וזמן אספקה.</p>
+            <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>כל מוצר נבדק במפעל לפני המשלוח.</div></div>
+          <div class="cap" data-cap="3"><p>הלקוח מחליט ומשלם ישירות למפעל דרך הבנק שלו. הכסף לא עובר דרך Magic AI.</p></div>
+          <div class="cap" data-cap="4"><p>ואתם מקבלים חלק מוסכם מההכנסה של Magic AI על כל לקוח שהבאתם, גם על ההזמנות הבאות שלו.</p></div>
+        </div>
+      </div>
+
+      <div class="canvas-box" aria-hidden="true">
+        <div class="canvas" id="canvas">
+          <svg class="globe" id="globe" viewBox="0 0 820 620"></svg>
+
+          <div class="sheet" id="sheet">
+            <div class="sh-head"><b>מפרט טכני</b><span>פרויקט מגורים · דוגמה</span></div>
+            <svg class="sh-plan" viewBox="0 0 352 150" fill="none" stroke="#0e1424"><use href="#plan"/></svg>
+            <div class="row r1" data-row="0"><b>אריח פורצלן</b><i>60×60 · R10</i></div>
+            <div class="row r2" data-row="1"><b>ברז מטבח נשלף</b><i>brass · chrome</i></div>
+            <div class="row r3" data-row="2"><b>דלת פנים</b><i>80×210 · MDF</i></div>
+            <div class="row r4"><b>גוף תאורה שקוע</b><i>LED 12W · 4000K</i></div>
+            <div class="tb" id="tb"><div><small>משרד אדריכלות</small><strong>המשרד שלכם</strong></div><div><small>שלב</small><strong>תכנון</strong></div></div>
+          </div>
+
+          <div class="pool" id="pool">
+            <div class="ph"><b>הזמנה אחת גדולה</b><span>הביקוש שלכם + הזמנות של חברות אחרות</span></div>
+            <div class="cells">
+              <div class="cell" style="--fx:-260px;--fy:-40px"></div><div class="cell me"></div>
+              <div class="cell" style="--fx:-300px;--fy:20px"></div><div class="cell" style="--fx:260px;--fy:-60px"></div>
+              <div class="cell me"></div><div class="cell" style="--fx:280px;--fy:30px"></div>
+              <div class="cell" style="--fx:-280px;--fy:80px"></div><div class="cell me"></div>
+              <div class="cell" style="--fx:-240px;--fy:160px"></div><div class="cell" style="--fx:260px;--fy:160px"></div>
+            </div>
+          </div>
+
+          <div class="chip" id="chip0">אריח פורצלן 60×60</div>
+          <div class="chip" id="chip1">ברז מטבח נשלף</div>
+          <div class="chip" id="chip2">דלת פנים 80×210</div>
+
+          <div class="card" id="cardA"><div class="ct"><b>מפעל A · סין</b><span class="c">אריח פורצלן · למ״ר<span class="ex">דוגמה</span></span><span class="ok">הלקוח בחר</span></div>
+            <dl><div><dt>מחיר מפעל</dt><dd>₪61.2</dd></div><div><dt>עלות מלאה עד אשדוד</dt><dd>₪81.9</dd></div><div><dt>זמן אספקה</dt><dd>68 ימים</dd></div></dl></div>
+          <div class="card" id="cardB"><div class="ct"><b>מפעל B · סין</b><span class="c">אריח פורצלן · למ״ר<span class="ex">דוגמה</span></span></div>
+            <dl><div><dt>מחיר מפעל</dt><dd>₪62.9</dd></div><div><dt>עלות מלאה עד אשדוד</dt><dd>₪83.6</dd></div><div><dt>זמן אספקה</dt><dd>75 ימים</dd></div></dl></div>
+          <div class="card" id="cardC"><div class="ct"><b>מפעל C · הודו</b><span class="c">אריח פורצלן · למ״ר<span class="ex">דוגמה</span></span></div>
+            <dl><div><dt>מחיר מפעל</dt><dd>₪61.8</dd></div><div><dt>עלות מלאה עד אשדוד</dt><dd>₪85.2</dd></div><div><dt>זמן אספקה</dt><dd>82 ימים</dd></div></dl></div>
+
+          <div class="bank" id="bank">
+            <span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/></svg>הבנק של הלקוח</span>
+            <span class="ar"></span>
+            <span class="n">מפעל A</span>
+          </div>
+
+          <div class="share" id="share">+ חלק מוסכם מההכנסה</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- phone + reduced motion: its own composition, a route you walk down -->
+  <div class="j-route" id="jroute">
+    <div class="wrap">
+      <h2 class="sec-h in">מהמפרט שלכם להזמנה ממפעל</h2>
+      <ol class="route" id="route">
+        <span class="fill" aria-hidden="true"></span>
+        <li class="stop">
+          <div class="lb">מפרט</div>
+          <p>אתם מכניסים למפרט פריטים מהקטלוג של המפעלים.</p>
+          <div class="mini m-sheet" aria-hidden="true">
+            <div class="mh"><b>מפרט טכני</b><span>פרויקט מגורים · דוגמה</span></div>
+            <div class="m-rows">
+              <div class="me"><b>אריח פורצלן</b><i>60×60 · R10</i></div>
+              <div class="me"><b>ברז מטבח נשלף</b><i>brass · chrome</i></div>
+              <div class="me"><b>דלת פנים</b><i>80×210 · MDF</i></div>
+              <div><b>גוף תאורה שקוע</b><i>LED 12W</i></div>
+            </div>
+          </div>
+        </li>
+        <li class="stop">
+          <div class="lb">איחוד ומכרז</div>
+          <p>Magic AI מאחדת את הביקוש עם הזמנות של חברות אחרות ומוציאה מכרז בין מפעלים בעולם.</p>
+          <div class="mini m-pool" aria-hidden="true">
+            <div class="ph"><b>הזמנה אחת גדולה</b><span>שלכם + חברות אחרות</span></div>
+            <div class="cells">
+              <div class="cell"></div><div class="cell me">אריח פורצלן</div>
+              <div class="cell me">ברז מטבח</div><div class="cell"></div>
+              <div class="cell"></div><div class="cell me">דלת פנים</div>
+              <div class="cell"></div><div class="cell"></div>
+            </div>
+            <div class="m-globe"><svg class="globe" id="globeMini" viewBox="0 0 340 250"></svg></div>
+          </div>
+        </li>
+        <li class="stop">
+          <div class="lb">שלוש הצעות</div>
+          <p>הלקוח רואה את שלושת המפעלים הטובים לפי עלות מלאה עד נמל אשדוד, וזמן אספקה.</p>
+          <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>כל מוצר נבדק במפעל לפני המשלוח.</div>
+          <div class="mini m-cards" aria-hidden="true">
+            <div class="card"><div class="ct"><b>מפעל A · סין</b><span>אריח פורצלן · למ״ר<span class="ex">דוגמה</span></span></div><dl><div><dt>מחיר מפעל</dt><dd>₪61.2</dd></div><div><dt>עלות עד אשדוד</dt><dd>₪81.9</dd></div><div><dt>אספקה</dt><dd>68 ימים</dd></div></dl></div>
+            <div class="card"><div class="ct"><b>מפעל B · סין</b></div><dl><div><dt>מחיר מפעל</dt><dd>₪62.9</dd></div><div><dt>עלות עד אשדוד</dt><dd>₪83.6</dd></div><div><dt>אספקה</dt><dd>75 ימים</dd></div></dl></div>
+            <div class="card"><div class="ct"><b>מפעל C · הודו</b></div><dl><div><dt>מחיר מפעל</dt><dd>₪61.8</dd></div><div><dt>עלות עד אשדוד</dt><dd>₪85.2</dd></div><div><dt>אספקה</dt><dd>82 ימים</dd></div></dl></div>
+          </div>
+        </li>
+        <li class="stop">
+          <div class="lb">הלקוח מחליט</div>
+          <p>הלקוח מחליט ומשלם ישירות למפעל דרך הבנק שלו. הכסף לא עובר דרך Magic AI.</p>
+          <div class="mini m-approve" aria-hidden="true">
+            <div class="card sel"><div class="ct"><b>מפעל A · סין</b><span class="ok">הלקוח בחר</span></div><dl><div><dt>מחיר מפעל</dt><dd>₪61.2</dd></div><div><dt>עלות עד אשדוד</dt><dd>₪81.9</dd></div><div><dt>אספקה</dt><dd>68 ימים</dd></div></dl></div>
+            <div class="bank"><span class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 12 4l9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/></svg>הבנק של הלקוח</span><span class="ar"></span><span class="n">מפעל A</span></div>
+          </div>
+        </li>
+        <li class="stop">
+          <div class="lb">החלק שלכם</div>
+          <p>ואתם מקבלים חלק מוסכם מההכנסה של Magic AI על כל לקוח שהבאתם, גם על ההזמנות הבאות שלו.</p>
+          <div class="mini m-share" aria-hidden="true">
+            <div class="share">+ חלק מוסכם מההכנסה</div>
+            <div class="tb paid"><div><small>משרד אדריכלות</small><strong>המשרד שלכם</strong></div><div><small>שלב</small><strong>תכנון</strong></div></div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REAL SCREENS (quiet before the peak) ================= -->
+<section class="screens" aria-labelledby="scr-h">
+  <div class="wrap">
+    <div class="hd in">
+      <h2 id="scr-h">ככה זה נראה בפלטפורמה</h2>
+      <p>מסכים מהפלטפורמה, על נתוני בדיקה.</p>
+    </div>
+    <ul class="shots">
+      <li class="in"><figure><div class="fr"><img src="img/s1-zayavka.jpg" alt="מסך בקשה חדשה: פריטי המפרט עם כמויות" loading="lazy" width="1600" height="786"></div><figcaption>המפרט נכנס כבקשה</figcaption></figure></li>
+      <li class="in"><figure><div class="fr"><img src="img/s2-tender.jpg" alt="מסך מכרז: פריטים, מפעלים במכרז וסטטוס" loading="lazy" width="1600" height="786"></div><figcaption>מכרז בין מפעלים</figcaption></figure></li>
+      <li class="in"><figure><div class="fr"><img src="img/s3-predlozhenie.jpg" alt="מסך הצעה: שלושת המפעלים לפי עלות מלאה וזמן אספקה" loading="lazy" width="1600" height="786"></div><figcaption>שלושת המפעלים הטובים</figcaption></figure></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= THE OFFER = PEAK ================= -->
+<section class="offer" id="offer" aria-labelledby="offer-h">
+  <div class="wrap">
+    <div class="offer-top">
+      <h2 id="offer-h" class="in">מצטרפים כשותפים <span class="acc">בשלושה צעדים</span></h2>
+      <div class="cal in"><span class="d">9</span><span class="t"><small>הגשת מועמדות עד</small><b>בדצמבר 2026</b></span></div>
+    </div>
+    <ol class="steps" id="steps">
+      <span class="ln" aria-hidden="true"><i></i></span>
+      <li><span class="n">1</span><p>משאירים פרטים בטופס.</p></li>
+      <li><span class="n">2</span><p>מציגים לכם את הפלטפורמה ואת תנאי השותפות בפגישה אישית, בזום או במשרד שלנו בדיזנגוף 50, תל אביב.</p></li>
+      <li><span class="n">3</span><p>סוגרים יחד את מודל השותפות שמתאים למשרד שלכם.</p></li>
+    </ol>
+    <div class="cta-wrap in">
+      <a class="btn" href="#join">אני רוצה לשמוע על השותפות
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="sec faq" aria-labelledby="faq-h">
+  <div class="wrap">
+    <h2 class="sec-h in" id="faq-h">שאלות שעולות</h2>
+    <dl class="qa">
+      <div class="in"><dt>האם יש תשלום?</dt><dd>אין תשלום חודשי קבוע. מרוויחים רק על עסקים שנוצרו ושולמו בפועל.</dd></div>
+      <div class="in"><dt>מה קורה עם הלקוחות שלי?</dt><dd>הלקוחות והמותג נשארים שלכם. הלקוח מחליט לבד על כל רכישה.</dd></div>
+      <div class="in"><dt>ואם אני ממליץ על מוצר?</dt><dd>ההמלצות נעשות לטובת הלקוח, עם גילוי נאות על עניין מסחרי כשהכללים מחייבים.</dd></div>
+      <div class="in"><dt>מי מחזיק את הכסף?</dt><dd>אף פעם לא Magic AI. הלקוח משלם למפעל דרך הבנק שלו.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- ================= FORM ================= -->
+<section class="sec join" id="join" aria-labelledby="join-h">
+  <div class="wrap">
+    <div class="side in">
+      <h2 class="sec-h" id="join-h">נשמח להכיר את המשרד שלכם</h2>
+      <p class="lead">נחזור אליכם לתיאום הצגה אישית.</p>
+      <span class="due"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>הגשת מועמדות עד <b>9 בדצמבר 2026</b></span>
+      <div class="tbx" aria-hidden="true"><div><small>משרד אדריכלות</small><strong>המשרד שלכם</strong></div><div><small>שלב</small><strong>שותפות</strong></div></div>
+    </div>
+    <div class="formbox in" id="formbox">
+      <!-- Preview only: no endpoint yet. Submit shows the success state. -->
+      <form id="lead" novalidate>
+        <div class="fg">
+          <div class="f"><label for="f-name">שם מלא</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div class="f"><label for="f-firm">שם המשרד</label><input id="f-firm" name="firm" autocomplete="organization" required></div>
+          <div class="f"><label for="f-role">תפקיד</label><input id="f-role" name="role" autocomplete="organization-title"></div>
+          <div class="f"><label for="f-size">כמה אדריכלים במשרד</label>
+            <select id="f-size" name="size"><option value="">בחירה</option><option>1-3</option><option>4-10</option><option>11-30</option><option>30+</option></select></div>
+          <div class="f"><label for="f-tel">נייד</label><input id="f-tel" name="mobile" type="tel" inputmode="tel" autocomplete="tel" required></div>
+          <div class="f"><label for="f-mail">אימייל</label><input id="f-mail" name="email" type="email" inputmode="email" autocomplete="email" required></div>
+          <fieldset class="f w"><legend>סוגי פרויקטים עיקריים</legend>
+            <div class="chips">
+              <label class="chipbox"><input type="checkbox" name="types" value="מגורים"><span>מגורים</span></label>
+              <label class="chipbox"><input type="checkbox" name="types" value="התחדשות עירונית"><span>התחדשות עירונית</span></label>
+              <label class="chipbox"><input type="checkbox" name="types" value="מסחר ומשרדים"><span>מסחר ומשרדים</span></label>
+              <label class="chipbox"><input type="checkbox" name="types" value="מלונאות"><span>מלונאות</span></label>
+              <label class="chipbox"><input type="checkbox" name="types" value="פנים"><span>פנים</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="submit">
+          <button class="btn" type="submit">שליחה</button>
+          <small>נחזור אליכם לתיאום הצגה אישית.</small>
+        </div>
+        <p class="err" id="err" role="alert"></p>
+      </form>
+      <div class="done" role="status" aria-live="polite">
+        <div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h3>תודה, קיבלנו.</h3>
+        <p>נחזור אליכם לתיאום הצגה אישית.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="logo"><b>M</b>Magic AI</span>
+  <span>דיזנגוף 50, תל אביב</span>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var mqR=matchMedia('(prefers-reduced-motion: reduce)');
+  var mqS=matchMedia('(min-width: 900px) and (min-height: 560px)');
+  var mqP=matchMedia('(hover: hover) and (pointer: fine)');
+  function mode(){
+    root.classList.toggle('rm',mqR.matches);
+    root.classList.toggle('stage-mode',mqS.matches&&!mqR.matches);
+  }
+  mode();
+  [mqR,mqS].forEach(function(m){(m.addEventListener?m.addEventListener('change',onMode):m.addListener(onMode));});
+  function onMode(){mode();layout();tick();}
+
+  /* ---------- globe (orthographic, real coordinates) ---------- */
+  var D=Math.PI/180;
+  function makeProj(lat0,lon0,R,cx,cy){
+    var s0=Math.sin(lat0*D),c0=Math.cos(lat0*D);
+    return function(lat,lon){
+      var la=lat*D,dl=(lon-lon0)*D,cl=Math.cos(la);
+      var vis=s0*Math.sin(la)+c0*cl*Math.cos(dl);
+      return {x:cx+R*cl*Math.sin(dl),y:cy-R*(c0*Math.sin(la)-s0*cl*Math.cos(dl)),v:vis>0};
+    };
+  }
+  var NS='http://www.w3.org/2000/svg';
+  function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+  var CITIES={ash:[31.8,34.65],A:[23.0,113.1],B:[24.8,118.6],C:[22.8,70.8],vn:[10.8,106.6],tr:[39.0,32.0],it:[45.5,9.2],il:[32.8,35.0]};
+  function drawGlobe(svg,o){
+    var P=makeProj(25,72,o.R,o.cx,o.cy),d='';
+    el('circle',{cx:o.cx,cy:o.cy,r:o.R,'class':'rim'},svg);
+    function line(pts){var s='',pen=false;pts.forEach(function(q){var p=P(q[0],q[1]);if(p.v){s+=(pen?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1);pen=true;}else pen=false;});return s;}
+    for(var lon=-180;lon<180;lon+=15){var a=[];for(var la=-90;la<=90;la+=3)a.push([la,lon]);d+=line(a);}
+    for(var lat=-75;lat<=75;lat+=15){var b=[];for(var lo=-180;lo<=180;lo+=3)b.push([lat,lo]);d+=line(b);}
+    el('path',{d:d,'class':'grat'},svg);
+    var ash=P.apply(null,CITIES.ash),pts={},arcs=[];
+    ['it','tr','C','vn','A','B'].forEach(function(k){
+      var p=P.apply(null,CITIES[k]);pts[k]=p;
+      var mx=(ash.x+p.x)/2,my=(ash.y+p.y)/2,dx=p.x-ash.x,dy=p.y-ash.y,dist=Math.hypot(dx,dy),nx=dy/dist,ny=-dx/dist;if(ny>0){nx=-nx;ny=-ny;}var cx=mx+nx*dist*.32,cy=my+ny*dist*.32;
+      var path=el('path',{d:'M'+ash.x.toFixed(1)+' '+ash.y.toFixed(1)+'Q'+cx.toFixed(1)+' '+cy.toFixed(1)+' '+p.x.toFixed(1)+' '+p.y.toFixed(1),'class':'arc',pathLength:1,'stroke-dasharray':1,'stroke-dashoffset':1},svg);
+      arcs.push(path);
+    });
+    Object.keys(pts).forEach(function(k){
+      var p=pts[k],win=/^[ABC]$/.test(k);
+      el('circle',{cx:p.x,cy:p.y,r:o.dot*2,'class':'pulse'},svg);
+      el('circle',{cx:p.x,cy:p.y,r:o.dot,'class':'fd'+(win?' win':'')},svg);
+      if(win&&o.labels){var t=el('text',{x:p.x+(k==='B'?10:k==='A'?-10:0),y:p.y+(k==='B'?-8:k==='A'?16:20),'class':'l','text-anchor':k==='A'?'end':k==='B'?'start':'middle'},svg);t.textContent=k;}
+    });
+    el('circle',{cx:ash.x,cy:ash.y,r:o.dot+2,'class':'ash'},svg);
+    var lt=el('text',{x:ash.x-12,y:ash.y+5,'text-anchor':'end'},svg);lt.textContent='נמל אשדוד';
+    lt.setAttribute('direction','rtl');lt.setAttribute('text-anchor','start');
+    return {ash:ash,pts:pts,arcs:arcs};
+  }
+  var G=drawGlobe(document.getElementById('globe'),{R:250,cx:330,cy:330,dot:5,labels:true});
+  var GM=drawGlobe(document.getElementById('globeMini'),{R:150,cx:170,cy:175,dot:4,labels:true});
+  GM.arcs.forEach(function(a){a.removeAttribute('stroke-dashoffset');});
+
+  /* ---------- keyframe scrubber ---------- */
+  function ez(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+  function at(fr,p){
+    if(p<=fr[0].p)return fr[0];
+    for(var i=1;i<fr.length;i++){if(p<=fr[i].p){var a=fr[i-1],b=fr[i],t=ez((p-a.p)/(b.p-a.p)||0),r={};for(var k in b)r[k]=(a[k]==null?b[k]:a[k]+(b[k]-a[k])*t);return r;}}
+    return fr[fr.length-1];
+  }
+  function put(node,s,w,h){
+    // s.x/s.y = top-left in canvas units (unscaled box), s.s = scale around centre
+    node.style.transform='translate('+s.x.toFixed(1)+'px,'+s.y.toFixed(1)+'px) scale('+(s.s==null?1:s.s).toFixed(3)+') rotate('+(s.r||0).toFixed(2)+'deg)';
+    node.style.opacity=(s.o==null?1:s.o).toFixed(3);
+  }
+  function $(id){return document.getElementById(id);}
+  var sheet=$('sheet'),pool=$('pool'),globe=$('globe'),chips=[$('chip0'),$('chip1'),$('chip2')],cards=[$('cardA'),$('cardB'),$('cardC')],bank=$('bank'),share=$('share'),tb=$('tb');
+  var rows=sheet.querySelectorAll('[data-row]'),caps=document.querySelectorAll('.cap'),halves=document.querySelectorAll('[data-half]'),rail=document.querySelectorAll('#rail li');
+
+  var SX=210,SY=50; // sheet home
+  var ash=G.ash, poolX=190,poolY=150;
+  // pool cells that hold "our" items: (col,row) -> canvas pos. In RTL the first grid column is on the right.
+  var cellPos=[[1,0],[0,2],[1,3]].map(function(c){var col=c[0]===0?1:0;return {x:poolX+16+col*208,y:poolY+48+c[1]*48};});
+  var rowY=[236,282,328];
+  function chipFrames(i){
+    var hx=SX+400-16-200, hy=SY+rowY[i], c=cellPos[i];
+    return [
+      {p:0,x:hx,y:hy,s:1,o:0,r:0},{p:.11,x:hx,y:hy,s:1,o:0,r:0},{p:.13,x:hx,y:hy,s:1,o:1,r:0},
+      {p:.25,x:560+i*14,y:110+i*64,s:1.04,o:1,r:i===1?2:-2},
+      {p:.36,x:c.x,y:c.y,s:1,o:1,r:0},{p:.45,x:c.x,y:c.y,s:1,o:1,r:0},
+      {p:.5,x:ash.x-100,y:ash.y-20,s:.15,o:0,r:0},{p:1,x:ash.x-100,y:ash.y-20,s:.15,o:0,r:0}
+    ];
+  }
+  var F={
+    sheet:[{p:0,x:SX,y:SY,s:1,o:1,r:0},{p:.12,x:SX,y:SY,s:1,o:1,r:0},{p:.26,x:10,y:60,s:.8,o:.55,r:-3},{p:.38,x:-30,y:70,s:.76,o:0,r:-4},
+           {p:.87,x:-30,y:70,s:.76,o:0,r:-4},{p:.94,x:40,y:50,s:.86,o:1,r:-2},{p:1,x:40,y:50,s:.86,o:1,r:-2}],
+    pool:[{p:0,x:poolX,y:poolY,s:.95,o:0},{p:.27,x:poolX,y:poolY,s:.95,o:0},{p:.32,x:poolX,y:poolY,s:1,o:1},{p:.45,x:poolX,y:poolY,s:1,o:1},
+          {p:.5,x:ash.x-220,y:ash.y-148,s:.08,o:0},{p:1,x:ash.x-220,y:ash.y-148,s:.08,o:0}],
+    globe:[{p:0,x:0,y:0,s:.96,o:0},{p:.43,x:0,y:0,s:.96,o:0},{p:.5,x:0,y:0,s:1,o:1},{p:.64,x:0,y:0,s:1,o:1},{p:.72,x:-60,y:0,s:1,o:.35},{p:.88,x:-60,y:0,s:1,o:.3},{p:.95,x:-60,y:0,s:1,o:.08},{p:1,x:-60,y:0,s:1,o:.08}],
+    bank:[{p:0,x:460,y:470,o:0,s:.96},{p:.80,x:460,y:470,o:0,s:.96},{p:.84,x:460,y:470,o:1,s:1},{p:.88,x:460,y:470,o:1,s:1},{p:.93,x:460,y:250,o:1,s:1},{p:1,x:460,y:250,o:1,s:1}]
+  };
+  var cardHome=[96,218,340];
+  function cardFrames(j){
+    var k=['A','B','C'][j],gp=G.pts[k],fx=gp.x-60-165,fy=gp.y-52;
+    var f=[{p:0,x:fx,y:fy,s:.2,o:0},{p:.62+j*.025,x:fx,y:fy,s:.2,o:0},{p:.71+j*.025,x:460,y:cardHome[j],s:1,o:1},{p:.82,x:460,y:cardHome[j],s:1,o:1}];
+    if(j===0)f.push({p:.88,x:460,y:cardHome[0],s:1,o:1},{p:.93,x:460,y:110,s:1,o:1},{p:1,x:460,y:110,s:1,o:1});
+    else f.push({p:.85,x:460,y:cardHome[j],s:.98,o:.42},{p:.9,x:500,y:cardHome[j]+20,s:.94,o:0},{p:1,x:500,y:cardHome[j]+20,s:.94,o:0});
+    return f;
+  }
+  // share chip: from card A to the sheet's title block. Sheet final: (40,50) scale .86 around its centre (240,310).
+  var tbCx=240, tbCy=310+(465-260)*.86;
+  F.share=[{p:0,x:520,y:150,s:.9,o:0},{p:.92,x:520,y:150,s:.9,o:0},{p:.94,x:520,y:150,s:1,o:1},{p:.985,x:tbCx-85,y:tbCy-48,s:1,o:1},{p:1,x:tbCx-85,y:tbCy-48,s:1,o:1}];
+  var CF=chips.map(function(_,i){return chipFrames(i);}),KF=cards.map(function(_,j){return cardFrames(j);});
+
+  var stageEl=$('jstage'),canvas=$('canvas'),box=canvas.parentNode;
+  function layout(){
+    if(!root.classList.contains('stage-mode'))return;
+    var w=box.clientWidth,h=box.clientHeight,k=Math.min(w/820,h/620,1.25);
+    canvas.style.transform='translate('+((w-820*k)/2).toFixed(1)+'px,'+((h-620*k)/2).toFixed(1)+'px) scale('+k.toFixed(4)+')';
+  }
+  var lastCap=-1;
+  function stage(){
+    var r=stageEl.getBoundingClientRect(),span=stageEl.offsetHeight-innerHeight;
+    var p=Math.min(1,Math.max(0,-r.top/span));
+    put(sheet,at(F.sheet,p));put(pool,at(F.pool,p));put(globe,at(F.globe,p));put(bank,at(F.bank,p));put(share,at(F.share,p));
+    chips.forEach(function(c,i){put(c,at(CF[i],p));});
+    cards.forEach(function(c,j){put(c,at(KF[j],p));});
+    rows.forEach(function(rw,i){rw.classList.toggle('hi',p>.03+i*.025&&p<=.12);rw.classList.toggle('ghost',p>.12);});
+    pool.classList.toggle('filled',p>.3);
+    var t=Math.min(1,Math.max(0,(p-.49)/.13));
+    G.arcs.forEach(function(a,i){var q=Math.min(1,Math.max(0,t*1.6-i*.12));a.setAttribute('stroke-dashoffset',(1-q).toFixed(3));});
+    globe.classList.toggle('tender',p>.55&&p<.7);
+    cards[0].classList.toggle('sel',p>.8);
+    tb.classList.toggle('paid',p>.975);
+    var ci=p<.12?0:p<.62?1:p<.8?2:p<.9?3:4;
+    if(ci!==lastCap){caps.forEach(function(c,i){c.classList.toggle('on',i===ci);});lastCap=ci;}
+    halves[0].classList.toggle('lit',p>=.12);halves[1].classList.toggle('lit',p>=.44);
+    var seg=[0,.12,.44,.62,.8,.9,1];
+    rail.forEach(function(li,i){var f=Math.min(1,Math.max(0,(p-seg[i])/(seg[i+1]-seg[i])));li.style.setProperty('--f',(f*100).toFixed(1)+'%');li.classList.toggle('on',p>=seg[i]&&(p<seg[i+1]||i===5));});
+  }
+
+  /* ---------- hero depth (scroll + pointer) ---------- */
+  var depth={bp:[.10,-6],sheet:[-.12,10],c1:[-.42,26],c2:[-.55,32],c3:[-.34,22],tag:[-.62,38],dim:[-.2,14]};
+  var dn=document.querySelectorAll('[data-depth]'),mx=0,my=0,tx=0,ty=0,hero=document.querySelector('.hero');
+  function heroTick(){
+    if(root.classList.contains('rm'))return;
+    var y=Math.min(innerHeight,Math.max(0,scrollY)),small=innerWidth<561;
+    tx+=(mx-tx)*.08;ty+=(my-ty)*.08;
+    dn.forEach(function(n){var d=depth[n.dataset.depth];if(!d)return;
+      var base=small&&n.dataset.depth==='sheet'?' scale(.6)':small&&/^c\d/.test(n.dataset.depth)?' scale(.82)':'';
+      var rot=n.dataset.depth==='sheet'?(y/innerHeight*-3):0;
+      n.style.transform='translate3d('+(tx*d[1]).toFixed(1)+'px,'+(y*d[0]+ty*d[1]*.6).toFixed(1)+'px,0) rotate('+rot.toFixed(2)+'deg)'+base;});
+    if(Math.abs(mx-tx)>.001||Math.abs(my-ty)>.001)req();
+  }
+  if(mqP.matches)hero.addEventListener('pointermove',function(e){var b=hero.getBoundingClientRect();mx=(e.clientX-b.left)/b.width-.5;my=(e.clientY-b.top)/b.height-.5;req();});
+
+  /* ---------- route fill (phone) ---------- */
+  var route=$('route');
+  function routeTick(){
+    if(root.classList.contains('stage-mode')||root.classList.contains('rm'))return;
+    var r=route.getBoundingClientRect(),v=(innerHeight*.6-r.top)/r.height;
+    route.style.setProperty('--rp',Math.min(1,Math.max(0,v)).toFixed(3));
+  }
+
+  /* ---------- loop ---------- */
+  var top=$('top'),queued=false;
+  function tick(){queued=false;top.classList.toggle('sc',scrollY>10);
+    if(root.classList.contains('stage-mode'))stage();heroTick();routeTick();}
+  function req(){if(!queued){queued=true;requestAnimationFrame(tick);}}
+  addEventListener('scroll',req,{passive:true});
+  addEventListener('resize',function(){layout();req();});
+  layout();tick();
+
+  /* ---------- reveals ---------- */
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}});},{rootMargin:'0px 0px -6% 0px',threshold:0});
+  document.querySelectorAll('.in,.stop,#steps').forEach(function(n){io.observe(n);});
+
+  /* ---------- form: preview success state only ---------- */
+  var form=$('lead'),err=$('err');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();var bad=null;
+    form.querySelectorAll('[required]').forEach(function(i){var ok=i.value.trim()!==''&&(i.type!=='email'||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(i.value.trim()));i.setAttribute('aria-invalid',ok?'false':'true');if(!ok&&!bad)bad=i;});
+    if(bad){err.textContent='חסרים פרטים: '+bad.labels[0].textContent+'.';bad.focus();return;}
+    err.textContent='';$('formbox').classList.add('sent');
+  });
+})();
+</script>
+</body>
+</html>
