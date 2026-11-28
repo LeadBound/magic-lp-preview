@@ -40,6 +40,7 @@ a{color:inherit}
 /* ---------- logo + buttons ---------- */
 .logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:18px;font-family:Manrope,Heebo,sans-serif;color:var(--ink);direction:ltr}
 .logo b{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--ink);color:#fff;font-size:15px}
+.logo .logo-mark{width:34px;height:34px;flex:none;display:block}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-weight:700;font-size:17px;font-family:inherit;padding:15px 24px;min-height:52px;border-radius:12px;background:var(--accent);color:#fff;border:0;cursor:pointer;white-space:nowrap;transition:background-color .15s var(--ease),transform .12s var(--ease),box-shadow .15s var(--ease);box-shadow:0 1px 2px rgba(14,20,36,.1),0 8px 20px rgba(51,85,214,.22)}
 .btn:hover{background:#2846bd}
 .btn:active{transform:translateY(1px) scale(.985)}
@@ -406,7 +407,7 @@ footer{padding:28px var(--gut);display:flex;justify-content:space-between;align-
 <body>
 
 <header class="top" id="top">
-  <span class="logo"><b>M</b>Magic AI</span>
+  <span class="logo"><img class="logo-mark" src="img/magic-logo.png" alt="" width="34" height="34">MAGICAI</span>
   <a class="btn sm" href="#join">אני רוצה לשמוע על השותפות</a>
 </header>
 
@@ -730,7 +731,7 @@ footer{padding:28px var(--gut);display:flex;justify-content:space-between;align-
 </main>
 
 <footer>
-  <span class="logo"><b>M</b>Magic AI</span>
+  <span class="logo"><img class="logo-mark" src="img/magic-logo.png" alt="" width="34" height="34">MAGICAI</span>
   <span>דיזנגוף 50, תל אביב</span>
 </footer>
 

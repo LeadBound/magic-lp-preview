@@ -44,6 +44,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,la
 .hdr .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;color:var(--ink);direction:ltr}
 .logo b{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--ink);color:#fff;font-size:15px;font-family:var(--num)}
+.logo .logo-mark{width:34px;height:34px;flex:none;display:block}
 .hdr-ref{font-size:13px;color:var(--mute)}
 /* ruler under the header: fine ticks every 8px, a longer one every 40px */
 .ruler{height:9px;border-bottom:1px solid var(--line);
@@ -330,7 +331,7 @@ fieldset.cell legend{padding:0;float:right;width:100%;font-size:13px;color:var(-
 
 <header class="hdr">
   <div class="wrap">
-    <span class="logo" aria-label="Magic AI"><b>M</b>Magic AI</span>
+    <span class="logo" aria-label="Magic AI"><img class="logo-mark" src="img/magic-logo.png" alt="" width="34" height="34">MAGICAI</span>
   </div>
   <div class="ruler" aria-hidden="true"></div>
 </header>
@@ -532,7 +533,7 @@ fieldset.cell legend{padding:0;float:right;width:100%;font-size:13px;color:var(-
 
 <footer class="ftr">
   <div class="wrap">
-    <span class="logo" aria-label="Magic AI"><b>M</b>Magic AI</span>
+    <span class="logo" aria-label="Magic AI"><img class="logo-mark" src="img/magic-logo.png" alt="" width="34" height="34">MAGICAI</span>
     <p>דיזנגוף 50, תל אביב</p>
   </div>
 </footer>
